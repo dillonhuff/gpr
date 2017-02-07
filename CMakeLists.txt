@@ -11,7 +11,8 @@ INCLUDE_DIRECTORIES(./src/)
 SET(GPR_HEADERS src/gcode_program.h
 		src/parser.h)
 
-SET(GPR_CPPS src/parser.cpp)
+SET(GPR_CPPS src/parser.cpp
+	     src/gcode_program.cpp)
 
 add_library(gpr ${GPR_CPPS})
 

@@ -6,9 +6,14 @@
 
 namespace gpr {
 
-  TEST_CASE("Parse comment") {
+  TEST_CASE("One line program") {
     gcode_program p = parse_gcode("G0 X1.0 Y1.0");
     REQUIRE(p.num_blocks() == 1);
   }
 
+  TEST_CASE("Two line program") {
+    gcode_program p = parse_gcode("G0 X1.0 Y1.0\nG1 X0.0 Y0.0 Z1.2 F12.0");
+    REQUIRE(p.num_blocks() == 2);
+  }
+  
 }
