@@ -1,0 +1,7 @@
+*~
+CMakeCache.txt
+CMakeFiles/
+Makefile
+all-tests
+cmake_install.cmake
+libgpr.a
