@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <vector>
 
 namespace gpr {
@@ -13,11 +14,34 @@ namespace gpr {
   enum token_type {
     TOKEN_TYPE_PAREN_COMMENT = 0,
     TOKEN_TYPE_BRACKET_COMMENT,
-    TOKEN_TYPE_ICODE,
+    TOKEN_TYPE_ICODE_DBL,
+    TOKEN_TYPE_ICODE_INT,
     TOKEN_TYPE_OTHER
   };
 
+  union icode_value {
+    double dbl;
+    int i;
+  };
+
+  struct icode {
+    char c;
+    icode_value v;
+  };
+
+  union token_data {
+    std::string str;
+    icode ic;
+  };
+  
   class token {
+  protected:
+    token_type ttp;
+    token_data d;
+
+  public:
+
+    token() {}
 
     void print(std::ostream& stream) {}
 
@@ -26,6 +50,7 @@ namespace gpr {
   token make_ilit(const char control_char, const int i);
 
   bool operator==(const token& l, const token& r);
+  bool operator!=(const token& l, const token& r);
 
   class block {
   protected:

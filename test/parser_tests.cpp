@@ -20,8 +20,15 @@ namespace gpr {
     gcode_program p = parse_gcode("G0 X1.0 Y1.0\nG1 X0.0 Y0.0 Z1.2 F12.0");
 
     token expected = make_ilit('G', 1);
+    
+    SECTION("First token is G1") {
+      REQUIRE(p.get_block(1).get_token(0) == expected);
+    }
 
-    REQUIRE(p.get_block(1).get_token(0) == expected);
+    SECTION("Second token is not G1") {
+      REQUIRE(p.get_block(1).get_token(0) != expected);
+    }
+
   }
   
 }

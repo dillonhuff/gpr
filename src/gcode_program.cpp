@@ -11,4 +11,8 @@ namespace gpr {
     return true;
   }
 
+  bool operator!=(const token& l, const token& r) {
+    return !(l == r);
+  }
+  
 }
