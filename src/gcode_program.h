@@ -23,9 +23,18 @@ namespace gpr {
 
   };
 
+  token make_ilit(const char control_char, const int i);
+
+  bool operator==(const token& l, const token& r);
+
   class block {
+  protected:
+    std::vector<token> tokens;
+
   public:
     int size() const { return 1; }
+    token get_token(const int i) { return tokens[i]; }
+
   };
 
   class gcode_program {
@@ -37,6 +46,8 @@ namespace gpr {
       blocks(p_blocks) {}
 
     int num_blocks() const { return blocks.size(); }
+
+    block get_block(const int i) { return blocks[i]; }
 
     std::vector<block>::const_iterator begin() const { return std::begin(blocks); }
     std::vector<block>::const_iterator end() const { return std::end(blocks); }
