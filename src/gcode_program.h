@@ -104,8 +104,13 @@ namespace gpr {
     std::vector<chunk*> chunks;
 
   public:
-    int size() const { return 1; }
-    const chunk& get_chunk(const int i) { return *(chunks[i]); }
+    int size() const { return chunks.size(); }
+
+    const chunk& get_chunk(const int i) {
+      assert(i < size());
+
+      return *(chunks[i]);
+    }
 
   };
 
@@ -119,7 +124,10 @@ namespace gpr {
 
     int num_blocks() const { return blocks.size(); }
 
-    block get_block(const int i) { return blocks[i]; }
+    block get_block(const int i) {
+      assert(i < blocks.size());
+      return blocks[i];
+    }
 
     std::vector<block>::const_iterator begin() const { return std::begin(blocks); }
     std::vector<block>::const_iterator end() const { return std::end(blocks); }
