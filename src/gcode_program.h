@@ -36,7 +36,7 @@ namespace gpr {
 
   class address {
   public:
-    virtual address_type addr_type() const { assert(false); }
+    virtual address_type addr_tp() const { assert(false); }
     virtual ~address() {}
   };
 
@@ -49,16 +49,26 @@ namespace gpr {
 
     int value() const { return val; }
 
-    address_type addr_type() const { return ADDRESS_TYPE_INTEGER; }
+    address_type tp() const { return ADDRESS_TYPE_INTEGER; }
 
   };
 
-  class chunk {};
+  enum chunk_type {
+    CHUNK_TYPE_COMMENT,
+    CHUNK_TYPE_WORD_ADDRESS
+  };
+
+  class chunk {
+  public:
+    virtual chunk_type tp() const { assert(false); }
+    virtual ~chunk() {}
+    virtual bool equals(const chunk& other) const = 0;
+  };
 
   class word_address : public chunk {
   protected:
     const char wd;
-    address const * const addr;
+    const address* const addr;
 
   public:
 
@@ -72,19 +82,30 @@ namespace gpr {
       delete addr;
     }
 
+    virtual chunk_type tp() const { assert(false); }
+
+    bool equals(const chunk& other) const {
+      if (other.tp() != CHUNK_TYPE_WORD_ADDRESS) {
+	return false;
+      }
+
+      return true;
+    }
+
   };
 
   word_address* make_word_int(const char c, const int i);
 
   bool operator==(const chunk& l, const chunk& r);
+  bool operator!=(const chunk& l, const chunk& r);
 
   class block {
   protected:
-    std::vector<chunk> chunks;
+    std::vector<chunk*> chunks;
 
   public:
     int size() const { return 1; }
-    const chunk& get_chunk(const int i) { return chunks[i]; }
+    const chunk& get_chunk(const int i) { return *(chunks[i]); }
 
   };
 

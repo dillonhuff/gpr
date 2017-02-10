@@ -8,7 +8,11 @@ namespace gpr {
   }
 
   bool operator==(const chunk& l, const chunk& r) {
-    return true;
+    return l.equals(r);
   }
 
+  bool operator!=(const chunk& l, const chunk& r) {
+    return !(l == r);
+  }
+  
 }

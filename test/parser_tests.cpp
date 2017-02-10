@@ -25,9 +25,9 @@ namespace gpr {
       REQUIRE(p.get_block(1).get_chunk(0) == *g1);
     }
 
-    // SECTION("Second token is not G1") {
-    //   REQUIRE(p.get_block(1).get_token(0) != expected);
-    // }
+    SECTION("Second token is not G1") {
+      REQUIRE(p.get_block(1).get_chunk(0) != *g1);
+    }
 
     delete g1;
 
