@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <string>
 #include <vector>
 
@@ -28,20 +29,54 @@ namespace gpr {
   //   icode ic;
   // };
 
+  enum address_type {
+    ADDRESS_TYPE_INTEGER = 0,
+    ADDRESS_TYPE_DOUBLE
+  };
+
   class address {
+  public:
+    virtual address_type addr_type() const { assert(false); }
+    virtual ~address() {}
+  };
+
+  class int_address : public address {
+  protected:
+    const int val;
+
+  public:
+    int_address(const int p_val) : val(p_val) {}
+
+    int value() const { return val; }
+
+    address_type addr_type() const { return ADDRESS_TYPE_INTEGER; }
+
   };
 
   class chunk {};
 
-  class word_address {
+  class word_address : public chunk {
   protected:
-    char wd;
-    address addr;
+    const char wd;
+    address const * const addr;
 
   public:
 
+    word_address(const char p_wd,
+		 const address* const p_addr) :
+      wd(p_wd),
+      addr(p_addr)
+    {}
+
+    ~word_address() {
+      delete addr;
+    }
 
   };
+
+  word_address* make_word_int(const char c, const int i);
+
+  bool operator==(const chunk& l, const chunk& r);
 
   class block {
   protected:
@@ -49,7 +84,7 @@ namespace gpr {
 
   public:
     int size() const { return 1; }
-    chunk get_token(const int i) { return chunks[i]; }
+    const chunk& get_chunk(const int i) { return chunks[i]; }
 
   };
 

@@ -19,17 +19,17 @@ namespace gpr {
   TEST_CASE("Correct first token") {
     gcode_program p = parse_gcode("G0 X1.0 Y1.0\nG1 X0.0 Y0.0 Z1.2 F12.0");
 
-    word_address g1('G', 1);
-
-    token expected = make_ilit('G', 1);
+    word_address* g1 = make_word_int('G', 1);
 
     SECTION("First token is G1") {
-      REQUIRE(p.get_block(1).get_chunk(0) == expected);
+      REQUIRE(p.get_block(1).get_chunk(0) == *g1);
     }
 
     // SECTION("Second token is not G1") {
     //   REQUIRE(p.get_block(1).get_token(0) != expected);
     // }
+
+    delete g1;
 
   }
 
