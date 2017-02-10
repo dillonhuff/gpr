@@ -5,60 +5,51 @@
 
 namespace gpr {
 
-  enum orientation {
-    GCA_ABSOLUTE = 0,
-    GCA_RELATIVE = 1,
-    GCA_NONE
+  // enum n_type {
+  //   TOKEN_TYPE_PAREN_COMMENT = 0,
+  //   TOKEN_TYPE_BRACKET_COMMENT,
+  //   TOKEN_TYPE_ICODE_DBL,
+  //   TOKEN_TYPE_ICODE_INT,
+  //   TOKEN_TYPE_OTHER
+  // };
+
+  // union icode_value {
+  //   double dbl;
+  //   int i;
+  // };
+
+  // struct icode {
+  //   char c;
+  //   icode_value v;
+  // };
+
+  // union token_data {
+  //   std::string str;
+  //   icode ic;
+  // };
+
+  class address {
   };
 
-  enum token_type {
-    TOKEN_TYPE_PAREN_COMMENT = 0,
-    TOKEN_TYPE_BRACKET_COMMENT,
-    TOKEN_TYPE_ICODE_DBL,
-    TOKEN_TYPE_ICODE_INT,
-    TOKEN_TYPE_OTHER
-  };
+  class chunk {};
 
-  union icode_value {
-    double dbl;
-    int i;
-  };
-
-  struct icode {
-    char c;
-    icode_value v;
-  };
-
-  union token_data {
-    std::string str;
-    icode ic;
-  };
-  
-  class token {
+  class word_address {
   protected:
-    token_type ttp;
-    token_data d;
+    char wd;
+    address addr;
 
   public:
 
-    token() {}
-
-    void print(std::ostream& stream) {}
 
   };
-
-  token make_ilit(const char control_char, const int i);
-
-  bool operator==(const token& l, const token& r);
-  bool operator!=(const token& l, const token& r);
 
   class block {
   protected:
-    std::vector<token> tokens;
+    std::vector<chunk> chunks;
 
   public:
     int size() const { return 1; }
-    token get_token(const int i) { return tokens[i]; }
+    chunk get_token(const int i) { return chunks[i]; }
 
   };
 

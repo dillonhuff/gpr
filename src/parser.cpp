@@ -9,10 +9,10 @@ using namespace std;
 
 namespace gpr {
 
-  ostream& operator<<(ostream& stream, const token& ic) {
-    //ic.print(stream);
-    return stream;
-  }
+  //ostream& operator<<(ostream& stream, const token& ic) {
+  //ic.print(stream);
+    //return stream;
+  //  }
 
   ostream& operator<<(ostream& stream, const block& block) {
     //for (auto i : block) { stream << i << " "; }
