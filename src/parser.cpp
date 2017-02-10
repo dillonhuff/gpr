@@ -108,19 +108,18 @@ namespace gpr {
   // }
 
   block lex_gprog_line(const string& str, int line_no) {
-    return block();
-  //   block ts;
-  //   parse_state s(str);
-  //   int i = 0;
-  //   while (s.chars_left()) {
-  //     ignore_whitespace(s);
-  //     if (!s.chars_left()) { break; }
-  //     token t = parse_token(s);
-  //     t.line_no = line_no;
-  //     ts.push_back(t);
-  //     i++;
-  //   }
-  //   return ts;
+    block ts;
+
+    // while (s.chars_left()) {
+    //   ignore_whitespace(s);
+    //   if (!s.chars_left()) { break; }
+    //   token t = parse_token(s);
+    //   t.line_no = line_no;
+    //   ts.push_back(t);
+
+    // }
+
+    return ts;
   }
 
   vector<block> lex_gprog(const string& str) {
