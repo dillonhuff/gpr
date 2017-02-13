@@ -17,6 +17,7 @@ namespace gpr {
     virtual address_type addr_tp() const { assert(false); }
     virtual bool equals(const address& other) const = 0;
     virtual address_type tp() const = 0;
+    virtual void print(std::ostream& stream) const = 0;
     virtual ~address() {}
   };
 
@@ -30,6 +31,10 @@ namespace gpr {
     int value() const { return val; }
 
     address_type tp() const { return ADDRESS_TYPE_INTEGER; }
+
+    void print(std::ostream& stream) const {
+      stream << val;
+    }
 
     virtual bool equals(const address& other) const {
       if (other.tp() != ADDRESS_TYPE_INTEGER) {
@@ -52,6 +57,10 @@ namespace gpr {
 
     address_type tp() const { return ADDRESS_TYPE_DOUBLE; }
 
+    void print(std::ostream& stream) const {
+      stream << val;
+    }
+    
     virtual bool equals(const address& other) const {
       assert(false);
     }
@@ -95,7 +104,7 @@ namespace gpr {
     }
 
     void print(std::ostream& stream) const {
-      stream << comment_text << std::endl;
+      stream << left_delim << " " << comment_text << " " << right_delim;
     }
     
     ~comment() {}
@@ -122,7 +131,8 @@ namespace gpr {
     virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
 
     void print(std::ostream& stream) const {
-      //stream << "a";
+      stream << wd << " ";
+      addr->print(stream);
     }
 
     bool equals(const chunk& other) const {
