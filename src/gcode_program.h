@@ -7,29 +7,6 @@
 
 namespace gpr {
 
-  // enum n_type {
-  //   TOKEN_TYPE_PAREN_COMMENT = 0,
-  //   TOKEN_TYPE_BRACKET_COMMENT,
-  //   TOKEN_TYPE_ICODE_DBL,
-  //   TOKEN_TYPE_ICODE_INT,
-  //   TOKEN_TYPE_OTHER
-  // };
-
-  // union icode_value {
-  //   double dbl;
-  //   int i;
-  // };
-
-  // struct icode {
-  //   char c;
-  //   icode_value v;
-  // };
-
-  // union token_data {
-  //   std::string str;
-  //   icode ic;
-  // };
-
   enum address_type {
     ADDRESS_TYPE_INTEGER = 0,
     ADDRESS_TYPE_DOUBLE

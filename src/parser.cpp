@@ -76,9 +76,7 @@ namespace gpr {
       s++;
     }
 
-    cout << "Parsing str = " << digits << endl;
     int v = stoi(digits);
-    cout << "Done parsign str" << endl;
     
     return v;
   }
@@ -119,9 +117,7 @@ namespace gpr {
   int parse_int(parse_state& s) {
     size_t j = s.i;
 
-    cout << " Parsing str" << endl;
     int v = stoi(string_remaining(s), &j);
-    cout << "Done parsign str" << endl;
 
     s.i += j;
     return v;
@@ -184,7 +180,7 @@ namespace gpr {
     case 'p':
     case 'd':
     case 'l':
-      return new int_address(parse_i(s));
+      return new int_address(parse_int(s));
     default:
       cout << "Invalid c = " << c << endl;
       cout << "Inavlid c as int = " << ((int) c) << endl;
@@ -202,27 +198,19 @@ namespace gpr {
       text += s.next();
       s++;
     } while (s.chars_left() && depth > 0);
-    // while (s.next() != ec) {
-    //   text += s.next();
-    //   s++;
-    // }
-    // parse_char(ec, s);
+
     return text;
   }
 
   word_address* parse_word_address(parse_state& s) {
-    cout << "Remaining str = " << string_remaining(s) << endl;
     char c = s.next();
     s++;
-
-    cout << "Next char = " << c << endl;
 
     address* a = parse_address(c, s);
     return new word_address(c, a);
   }
 
   chunk* parse_chunk(parse_state& s) {
-    cout << "Parsign chunk" << endl;
 
     if (s.next() == '[') {
       string cs = parse_comment_with_delimiters('[', ']', s);
