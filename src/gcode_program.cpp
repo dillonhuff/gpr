@@ -24,6 +24,11 @@ namespace gpr {
     return std::unique_ptr<word_address>(new word_address(c, int_addr));
   }
 
+  std::unique_ptr<word_address> make_word_double(const char c, const double i) {
+    const double_address* const double_addr = new double_address(i);
+    return std::unique_ptr<word_address>(new word_address(c, double_addr));
+  }
+
   bool operator==(const chunk& l, const chunk& r) {
     return l.equals(r);
   }

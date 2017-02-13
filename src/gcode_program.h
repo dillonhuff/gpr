@@ -62,7 +62,11 @@ namespace gpr {
     }
     
     virtual bool equals(const address& other) const {
-      assert(false);
+      if (other.tp() != ADDRESS_TYPE_DOUBLE) {
+	return false;
+      }
+      const double_address& other_int = static_cast<const double_address&>(other);
+      return val == other_int.val;
     }
     
   };
@@ -147,6 +151,7 @@ namespace gpr {
   };
 
   std::unique_ptr<word_address> make_word_int(const char c, const int i);
+  std::unique_ptr<word_address> make_word_double(const char c, const double i);
 
   bool operator==(const chunk& l, const chunk& r);
   bool operator!=(const chunk& l, const chunk& r);

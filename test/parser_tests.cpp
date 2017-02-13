@@ -33,6 +33,16 @@ namespace gpr {
       REQUIRE(p.get_block(0).get_chunk(0) != *g1);
     }
 
+    unique_ptr<word_address> f12 = make_word_double('F', 12.0);
+
+    SECTION("Double addresses") {
+      REQUIRE(p.get_block(1).get_chunk(4) == *f12);
+    }
+
+    SECTION("Double addresses") {
+      REQUIRE(p.get_block(1).get_chunk(3) != *f12);
+    }
+    
   }
 
 }
