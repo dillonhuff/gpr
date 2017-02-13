@@ -65,6 +65,33 @@ namespace gpr {
     virtual bool equals(const chunk& other) const = 0;
   };
 
+  class comment : public chunk {
+  protected:
+    char left_delim;
+    char right_delim;
+    std::string comment_text;
+
+  public:
+    comment(const char p_left_delim,
+	    const char p_right_delim,
+	    const std::string& p_comment_text) :
+      left_delim(p_left_delim),
+      right_delim(p_right_delim),
+      comment_text(p_comment_text)
+    {}
+      
+    virtual bool equals(const chunk& other) const {
+      if (other.tp() != CHUNK_TYPE_WORD_ADDRESS) {
+	return false;
+      }
+
+      return true;
+    }
+
+    ~comment() {}
+
+  };
+
   class word_address : public chunk {
   protected:
     const char wd;
@@ -82,7 +109,7 @@ namespace gpr {
       delete addr;
     }
 
-    virtual chunk_type tp() const { assert(false); }
+    virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
 
     bool equals(const chunk& other) const {
       if (other.tp() != CHUNK_TYPE_WORD_ADDRESS) {
@@ -104,6 +131,9 @@ namespace gpr {
     std::vector<chunk*> chunks;
 
   public:
+    block(const std::vector<chunk*> p_chunks) :
+      chunks(p_chunks) {}
+
     int size() const { return chunks.size(); }
 
     const chunk& get_chunk(const int i) {
