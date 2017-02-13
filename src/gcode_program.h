@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -90,6 +91,7 @@ namespace gpr {
     virtual chunk_type tp() const { assert(false); }
     virtual ~chunk() {}
     virtual bool equals(const chunk& other) const = 0;
+    virtual void print(std::ostream& stream) const = 0;
   };
 
   class comment : public chunk {
@@ -115,6 +117,10 @@ namespace gpr {
       return true;
     }
 
+    void print(std::ostream& stream) const {
+      stream << comment_text << std::endl;
+    }
+    
     ~comment() {}
 
   };
@@ -137,6 +143,10 @@ namespace gpr {
     }
 
     virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
+
+    void print(std::ostream& stream) const {
+      //stream << "a";
+    }
 
     bool equals(const chunk& other) const {
       if (other.tp() != CHUNK_TYPE_WORD_ADDRESS) {
@@ -170,6 +180,12 @@ namespace gpr {
       return *(chunks[i]);
     }
 
+    std::vector<chunk*>::const_iterator begin() const { return std::begin(chunks); }
+    std::vector<chunk*>::const_iterator end() const { return std::end(chunks); }
+
+    std::vector<chunk*>::iterator begin() { return std::begin(chunks); }
+    std::vector<chunk*>::iterator end() { return std::end(chunks); }
+    
   };
 
   class gcode_program {

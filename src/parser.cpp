@@ -10,18 +10,18 @@ using namespace std;
 
 namespace gpr {
 
-  //ostream& operator<<(ostream& stream, const token& ic) {
-  //ic.print(stream);
-    //return stream;
-  //  }
+  ostream& operator<<(ostream& stream, const chunk& ic) {
+    ic.print(stream);
+    return stream;
+   }
 
   ostream& operator<<(ostream& stream, const block& block) {
-    //for (auto i : block) { stream << i << " "; }
+    for (auto i : block) { stream << *i << " "; }
     return stream;
   }
 
-  ostream& operator<<(ostream& stream, const vector<block>& blocks) {
-    //for (auto b : blocks) { stream << b << endl; }
+  ostream& operator<<(ostream& stream, const gcode_program& program) {
+    for (auto b : program) { stream << b << endl; }
     return stream;
   }
   
