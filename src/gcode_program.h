@@ -146,7 +146,7 @@ namespace gpr {
 
   };
 
-  word_address* make_word_int(const char c, const int i);
+  std::unique_ptr<word_address> make_word_int(const char c, const int i);
 
   bool operator==(const chunk& l, const chunk& r);
   bool operator!=(const chunk& l, const chunk& r);
