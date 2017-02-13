@@ -37,6 +37,7 @@ namespace gpr {
   class address {
   public:
     virtual address_type addr_tp() const { assert(false); }
+    virtual bool equals(const address& other) const = 0;
     virtual ~address() {}
   };
 
@@ -51,6 +52,10 @@ namespace gpr {
 
     address_type tp() const { return ADDRESS_TYPE_INTEGER; }
 
+    virtual bool equals(const address& other) const {
+      assert(false);
+    }
+
   };
 
   class double_address : public address {
@@ -64,6 +69,10 @@ namespace gpr {
 
     address_type tp() const { return ADDRESS_TYPE_DOUBLE; }
 
+    virtual bool equals(const address& other) const {
+      assert(false);
+    }
+    
   };
   
   enum chunk_type {
@@ -129,7 +138,8 @@ namespace gpr {
 	return false;
       }
 
-      return true;
+      const word_address& other_addr = static_cast<const word_address&>(other);
+      return (wd == other_addr.wd) && (addr->equals(*(other_addr.addr)));
     }
 
   };
