@@ -26,7 +26,7 @@ namespace gpr {
     }
 
     SECTION("Second token is not G1") {
-      REQUIRE(p.get_block(1).get_chunk(0) != *g1);
+      REQUIRE(p.get_block(0).get_chunk(0) != *g1);
     }
 
     delete g1;

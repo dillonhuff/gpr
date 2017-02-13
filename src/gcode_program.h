@@ -38,6 +38,7 @@ namespace gpr {
   public:
     virtual address_type addr_tp() const { assert(false); }
     virtual bool equals(const address& other) const = 0;
+    virtual address_type tp() const = 0;
     virtual ~address() {}
   };
 
@@ -53,7 +54,11 @@ namespace gpr {
     address_type tp() const { return ADDRESS_TYPE_INTEGER; }
 
     virtual bool equals(const address& other) const {
-      assert(false);
+      if (other.tp() != ADDRESS_TYPE_INTEGER) {
+	return false;
+      }
+      const int_address& other_int = static_cast<const int_address&>(other);
+      return val == other_int.val;
     }
 
   };
