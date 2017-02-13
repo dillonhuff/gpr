@@ -76,7 +76,7 @@ namespace gpr {
       s++;
     }
 
-    cout << " Parsing str = " << digits << endl;
+    cout << "Parsing str = " << digits << endl;
     int v = stoi(digits);
     cout << "Done parsign str" << endl;
     
@@ -165,7 +165,7 @@ namespace gpr {
     case 'r':
     case 's':
     case 'q':
-      new int_address(parse_double(s));
+      return new double_address(parse_double(s));
     case 'G':
     case 'H':
     case 'M':
@@ -214,12 +214,16 @@ namespace gpr {
     cout << "Remaining str = " << string_remaining(s) << endl;
     char c = s.next();
     s++;
-    address* a = parse_address(c, s);
 
+    cout << "Next char = " << c << endl;
+
+    address* a = parse_address(c, s);
     return new word_address(c, a);
   }
 
   chunk* parse_chunk(parse_state& s) {
+    cout << "Parsign chunk" << endl;
+
     if (s.next() == '[') {
       string cs = parse_comment_with_delimiters('[', ']', s);
       return new comment('[', ']', cs);

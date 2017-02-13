@@ -53,6 +53,19 @@ namespace gpr {
 
   };
 
+  class double_address : public address {
+  protected:
+    const double val;
+
+  public:
+    double_address(const double p_val) : val(p_val) {}
+
+    double value() const { return val; }
+
+    address_type tp() const { return ADDRESS_TYPE_DOUBLE; }
+
+  };
+  
   enum chunk_type {
     CHUNK_TYPE_COMMENT,
     CHUNK_TYPE_WORD_ADDRESS
