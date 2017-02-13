@@ -1,5 +1,7 @@
 #define CATCH_CONFIG_MAIN
 
+#include <iostream>
+
 #include "catch.hpp"
 
 #include "parser.h"
@@ -18,6 +20,8 @@ namespace gpr {
 
   TEST_CASE("Correct first token") {
     gcode_program p = parse_gcode("G0 X1.0 Y1.0\nG1 X0.0 Y0.0 Z1.2 F12.0");
+
+    std::cout << p << std::endl;
 
     word_address* g1 = make_word_int('G', 1);
 

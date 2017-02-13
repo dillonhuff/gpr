@@ -1,7 +1,24 @@
 #include "gcode_program.h"
 
+using namespace std;
+
 namespace gpr {
 
+  ostream& operator<<(ostream& stream, const chunk& ic) {
+    ic.print(stream);
+    return stream;
+   }
+
+  ostream& operator<<(ostream& stream, const block& block) {
+    for (auto i : block) { stream << *i << " "; }
+    return stream;
+  }
+
+  ostream& operator<<(ostream& stream, const gcode_program& program) {
+    for (auto b : program) { stream << b << endl; }
+    return stream;
+  }
+  
   word_address* make_word_int(const char c, const int i) {
     const int_address* const int_addr = new int_address(i);
     return new word_address(c, int_addr);

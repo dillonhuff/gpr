@@ -131,7 +131,7 @@ namespace gpr {
     virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
 
     void print(std::ostream& stream) const {
-      stream << wd << " ";
+      stream << wd;
       addr->print(stream);
     }
 
@@ -198,4 +198,10 @@ namespace gpr {
 
   };
 
+  std::ostream& operator<<(std::ostream& stream, const chunk& ic);
+
+  std::ostream& operator<<(std::ostream& stream, const block& block);
+
+  std::ostream& operator<<(std::ostream& stream, const gcode_program& program);
+  
 }
