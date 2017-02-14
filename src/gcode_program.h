@@ -98,9 +98,11 @@ namespace gpr {
       right_delim(p_right_delim),
       comment_text(p_comment_text)
     {}
+
+    chunk_type tp() const { return CHUNK_TYPE_COMMENT; }
       
     virtual bool equals(const chunk& other) const {
-      if (other.tp() != CHUNK_TYPE_WORD_ADDRESS) {
+      if (other.tp() != CHUNK_TYPE_COMMENT) {
 	return false;
       }
 

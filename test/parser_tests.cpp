@@ -45,4 +45,10 @@ namespace gpr {
     
   }
 
+  TEST_CASE("Comments with same delimiters equality test") {
+    gcode_program p =
+      parse_gcode("( This is a comment )\n M23 ( And so is this ) G54");
+    REQUIRE(p.get_block(1).get_chunk(0) != p.get_block(1).get_chunk(1));
+  }
+
 }
