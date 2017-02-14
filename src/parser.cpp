@@ -180,8 +180,10 @@ namespace gpr {
     do {
       if (s.next() == sc) { depth++; }
       else if (s.next() == ec) { depth--; }
-      text += s.next();
-      s++;
+      else {
+	text += s.next();
+      }
+      s++;      
     } while (s.chars_left() && depth > 0);
 
     return text;

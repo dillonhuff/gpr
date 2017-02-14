@@ -106,7 +106,12 @@ namespace gpr {
 	return false;
       }
 
-      return true;
+      const comment& other_comment =
+	static_cast<const comment&>(other);
+
+      return (comment_text == other_comment.comment_text) &&
+	(left_delim == other_comment.left_delim) &&
+	(right_delim == other_comment.right_delim);
     }
 
     void print(std::ostream& stream) const {

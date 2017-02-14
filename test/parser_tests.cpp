@@ -45,10 +45,25 @@ namespace gpr {
     
   }
 
-  TEST_CASE("Comments with same delimiters equality test") {
+  TEST_CASE("Different comments with same delimiters are not equal") {
     gcode_program p =
       parse_gcode("( This is a comment )\n M23 ( And so is this ) G54");
-    REQUIRE(p.get_block(1).get_chunk(0) != p.get_block(1).get_chunk(1));
+
+    REQUIRE(p.get_block(0).get_chunk(0) != p.get_block(1).get_chunk(1));
   }
 
+  TEST_CASE("Same comments with same delimiters are equal") {
+    gcode_program p =
+      parse_gcode("( This is a comment G2 )\n M23 ( This is a comment G2 ) G54");
+
+    REQUIRE(p.get_block(0).get_chunk(0) == p.get_block(1).get_chunk(1));
+  }
+
+  TEST_CASE("Same comments with different delimiters are not equal") {
+    gcode_program p =
+      parse_gcode("( This is a comment G2 )\n M23 [ This is a comment G2 ] G54");
+
+    REQUIRE(p.get_block(0).get_chunk(0) != p.get_block(1).get_chunk(1));
+  }
+  
 }
