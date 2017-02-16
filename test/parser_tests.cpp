@@ -92,6 +92,10 @@ namespace gpr {
       REQUIRE(p.get_block(2).line_number() == 103);
     }
 
+    SECTION("4th block does not have a line number") {
+      REQUIRE(!(p.get_block(3).has_line_number()));
+    }
+
   }
   
 }

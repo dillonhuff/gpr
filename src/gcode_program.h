@@ -196,9 +196,14 @@ namespace gpr {
 
     bool is_deleted() const { return slashed_out; }
 
-    bool has_line_number() const { return has_line_no; }
+    bool has_line_number() const {
+      return has_line_no;
+    }
 
-    int line_number() const { return line_no; }
+    int line_number() const {
+      assert(has_line_number());
+      return line_no;
+    }
 
     std::vector<chunk*>::const_iterator begin() const { return std::begin(chunks); }
     std::vector<chunk*>::const_iterator end() const { return std::end(chunks); }
