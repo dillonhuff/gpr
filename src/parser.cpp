@@ -211,11 +211,24 @@ namespace gpr {
     
   }
 
+  bool parse_slash(parse_state& s) {
+    if (s.next() == '/') {
+      s++;
+      return true;
+    }
+
+    return false;
+  }
+
   block lex_gprog_line(const string& str, int line_no) {
     parse_state s(str);
 
     vector<chunk*> chunks;
-    
+
+    ignore_whitespace(s);
+
+    bool is_slashed = parse_slash(s);
+
     while (s.chars_left()) {
       ignore_whitespace(s);
       if (!s.chars_left()) { break; }
@@ -229,7 +242,7 @@ namespace gpr {
 
     }
 
-    return block(chunks);
+    return block(is_slashed, chunks);
   }
 
   vector<block> lex_gprog(const string& str) {

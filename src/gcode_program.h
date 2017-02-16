@@ -165,11 +165,13 @@ namespace gpr {
 
   class block {
   protected:
+    bool slashed_out;
     std::vector<chunk*> chunks;
 
   public:
-    block(const std::vector<chunk*> p_chunks) :
-      chunks(p_chunks) {}
+    block(const bool p_slashed_out,
+	  const std::vector<chunk*> p_chunks) :
+      slashed_out(p_slashed_out), chunks(p_chunks) {}
 
     int size() const { return chunks.size(); }
 
@@ -178,6 +180,8 @@ namespace gpr {
 
       return *(chunks[i]);
     }
+
+    bool is_deleted() const { return slashed_out; }
 
     std::vector<chunk*>::const_iterator begin() const { return std::begin(chunks); }
     std::vector<chunk*>::const_iterator end() const { return std::end(chunks); }

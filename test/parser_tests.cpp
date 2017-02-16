@@ -65,5 +65,12 @@ namespace gpr {
 
     REQUIRE(p.get_block(0).get_chunk(0) != p.get_block(1).get_chunk(1));
   }
+
+  TEST_CASE("Second block is deleted") {
+    gcode_program p =
+      parse_gcode("( This is a comment G2 )\n /M23 [ This is a comment G2 ] G54");
+
+    REQUIRE(p.get_block(1).is_deleted());
+  }
   
 }
