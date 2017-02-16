@@ -1,10 +1,10 @@
+#include "parser.h"
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <streambuf>
-
-#include "parser.h"
 
 using namespace std;
 
@@ -220,7 +220,18 @@ namespace gpr {
     return false;
   }
 
-  block lex_gprog_line(const string& str, int line_no) {
+  std::pair<bool, int> parse_line_number(parse_state& s) {
+    if (s.next() == 'N') {
+      s++;
+
+      int ln = parse_int(s);
+
+      return std::make_pair(true, ln);
+    }
+    return std::make_pair(false, -1);
+  }
+
+  block lex_gprog_line(const string& str) {
     parse_state s(str);
 
     vector<chunk*> chunks;
@@ -229,6 +240,11 @@ namespace gpr {
 
     bool is_slashed = parse_slash(s);
 
+    ignore_whitespace(s);
+
+    std::pair<bool, int> line_no =
+      parse_line_number(s);
+
     while (s.chars_left()) {
       ignore_whitespace(s);
       if (!s.chars_left()) { break; }
@@ -236,31 +252,30 @@ namespace gpr {
       chunk* ch = parse_chunk(s);
       chunks.push_back(ch);
       
-    //   token t = parse_token(s);
-    //   t.line_no = line_no;
-    //   ts.push_back(t);
-
     }
 
-    return block(is_slashed, chunks);
+    if (line_no.first) {
+      return block(line_no.second, is_slashed, chunks);
+    } else {
+      return block(is_slashed, chunks);
+    }
   }
 
   vector<block> lex_gprog(const string& str) {
     vector<block> blocks;
     string::const_iterator line_start = str.begin();
     string::const_iterator line_end;
-    int line_no = 1;
+
     while (line_start < str.end()) {
       line_end = find(line_start, str.end(), '\n');
       string line(line_start, line_end);
       if (line.size() > 0) {
-	block b = lex_gprog_line(line, line_no);
+	block b = lex_gprog_line(line);
 	//if (b.size() > 0) {
 	  blocks.push_back(b);
 	  //}
       }
       line_start += line.size() + 1;
-      line_no++;
     }
     return blocks;
   }

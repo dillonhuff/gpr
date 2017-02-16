@@ -165,14 +165,27 @@ namespace gpr {
 
   class block {
   protected:
+    bool has_line_no;
+    int line_no;
     bool slashed_out;
     std::vector<chunk*> chunks;
 
   public:
+    block(const int p_line_no,
+	  const bool p_slashed_out,
+	  const std::vector<chunk*> p_chunks) :
+      has_line_no(true),
+      line_no(p_line_no),
+      slashed_out(p_slashed_out),
+      chunks(p_chunks) {}
+
     block(const bool p_slashed_out,
 	  const std::vector<chunk*> p_chunks) :
-      slashed_out(p_slashed_out), chunks(p_chunks) {}
-
+      has_line_no(false),
+      line_no(-1),
+      slashed_out(p_slashed_out),
+      chunks(p_chunks) {}
+    
     int size() const { return chunks.size(); }
 
     const chunk& get_chunk(const int i) {
@@ -182,6 +195,10 @@ namespace gpr {
     }
 
     bool is_deleted() const { return slashed_out; }
+
+    bool has_line_number() const { return has_line_no; }
+
+    int line_number() const { return line_no; }
 
     std::vector<chunk*>::const_iterator begin() const { return std::begin(chunks); }
     std::vector<chunk*>::const_iterator end() const { return std::end(chunks); }

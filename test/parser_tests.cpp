@@ -72,5 +72,26 @@ namespace gpr {
 
     REQUIRE(p.get_block(1).is_deleted());
   }
+
+  TEST_CASE("First block is not deleted") {
+    gcode_program p =
+      parse_gcode("( This is a comment G2 )\n /M23 [ This is a comment G2 ] G54");
+
+    REQUIRE(!(p.get_block(0).is_deleted()));
+  }
+
+  TEST_CASE("3rd block is labeled line 103") {
+    gcode_program p =
+      parse_gcode("(*** Toolpath 1 ***)\n G0 X0.0 Y0.0 Z0.0 \n N103 G1 X1.0 F23.0\nG1 Z-1.0 F10.0");
+
+    SECTION("Has line number") {
+      REQUIRE(p.get_block(2).has_line_number());
+    }
+
+    SECTION("Number is 103") {
+      REQUIRE(p.get_block(2).line_number() == 103);
+    }
+
+  }
   
 }
