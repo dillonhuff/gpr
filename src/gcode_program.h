@@ -18,6 +18,7 @@ namespace gpr {
     virtual bool equals(const address& other) const = 0;
     virtual address_type tp() const = 0;
     virtual void print(std::ostream& stream) const = 0;
+    virtual address* copy() const = 0;
     virtual ~address() {}
   };
 
@@ -27,6 +28,10 @@ namespace gpr {
 
   public:
     int_address(const int p_val) : val(p_val) {}
+
+    address* copy() const {
+      return new int_address(val);
+    }
 
     int value() const { return val; }
 
@@ -53,6 +58,10 @@ namespace gpr {
   public:
     double_address(const double p_val) : val(p_val) {}
 
+    address* copy() const {
+      return new double_address(val);
+    }
+    
     double value() const { return val; }
 
     address_type tp() const { return ADDRESS_TYPE_DOUBLE; }
@@ -82,6 +91,7 @@ namespace gpr {
     virtual ~chunk() {}
     virtual bool equals(const chunk& other) const = 0;
     virtual void print(std::ostream& stream) const = 0;
+    virtual chunk* copy() const = 0;
   };
 
   class comment : public chunk {
@@ -100,6 +110,10 @@ namespace gpr {
     {}
 
     chunk_type tp() const { return CHUNK_TYPE_COMMENT; }
+
+    chunk* copy() const {
+      return new comment(left_delim, right_delim, comment_text);
+    }
       
     virtual bool equals(const chunk& other) const {
       if (other.tp() != CHUNK_TYPE_COMMENT) {
@@ -139,6 +153,10 @@ namespace gpr {
       delete addr;
     }
 
+    chunk* copy() const {
+      return new word_address(wd, addr->copy());
+    }
+    
     virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
 
     void print(std::ostream& stream) const {
@@ -185,7 +203,34 @@ namespace gpr {
       line_no(-1),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {}
+
+    ~block() {
+      for (unsigned i = 0; i < chunks.size(); i++) {
+	delete chunks[i];
+      }
+    }
+
+    block(const block& other) :
+      has_line_no(other.has_line_no),
+      line_no(other.line_no),
+      slashed_out(other.slashed_out) {
+
+      for (unsigned i = 0; i < other.chunks.size(); i++) {
+	chunks.push_back( (other.chunks[i])->copy() );
+      }
+    }
     
+    block& operator=(const block& other) {
+      has_line_no = other.has_line_no;
+      line_no = other.line_no;
+      slashed_out = other.slashed_out;
+      for (unsigned i = 0; i < other.chunks.size(); i++) {
+	chunks.push_back( (other.chunks[i])->copy() );
+      }
+
+      return *this;
+    }
+
     int size() const { return chunks.size(); }
 
     const chunk& get_chunk(const int i) {
