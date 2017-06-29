@@ -20,3 +20,6 @@ SET(TEST_FILES test/parser_tests.cpp)
 
 add_executable(all-tests ${TEST_FILES})
 target_link_libraries(all-tests gpr)
+
+add_executable(parse-gcode src/main.cpp)
+target_link_libraries(parse-gcode gpr)
