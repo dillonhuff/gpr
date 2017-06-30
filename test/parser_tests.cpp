@@ -97,5 +97,13 @@ namespace gpr {
     }
 
   }
+
+  TEST_CASE("Parsing Cura style-semicolon comments") {
+    gcode_program p =
+      parse_gcode(";Generated with Cura_SteamEngine 2.5.0\nM190 S60\nM104 S200\nM109 S200\nG28 ;Home");
+
+    block b = p.get_block(0);
+    REQUIRE(b.get_chunk(0).tp() == CHUNK_TYPE_COMMENT);
+  }
   
 }

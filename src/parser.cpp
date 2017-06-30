@@ -173,7 +173,26 @@ namespace gpr {
       assert(false);
     }
   }
-  
+
+  string parse_line_comment_with_delimiter(char sc, parse_state& s) {
+    string text = "";
+    while (s.chars_left() && s.next() != '\n') {
+      text += s.next();
+      s++;
+    }
+
+    // do {
+    //   if (s.next() == sc) { depth++; }
+    //   else if (s.next() == ec) { depth--; }
+    //   else {
+    // 	text += s.next();
+    //   }
+    //   s++;      
+    // } while (s.chars_left() && depth > 0);
+
+    return text;
+  }
+
   string parse_comment_with_delimiters(char sc, char ec, parse_state& s) {
     int depth = 0;
     string text = "";
@@ -205,6 +224,9 @@ namespace gpr {
     } else if (s.next() == '(') {
       string cs = parse_comment_with_delimiters('(', ')', s);
       return new comment('(', ')', cs);
+    } else if (s.next() == ';') {
+      string cs = parse_line_comment_with_delimiter(';', s);
+      return new comment(';', ';', cs);
     } else {
       return parse_word_address(s);
     }
