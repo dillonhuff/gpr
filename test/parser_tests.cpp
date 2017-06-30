@@ -105,5 +105,12 @@ namespace gpr {
     block b = p.get_block(0);
     REQUIRE(b.get_chunk(0).tp() == CHUNK_TYPE_COMMENT);
   }
+
+  TEST_CASE("Parse 3D printer E-block") {
+    gcode_program p = parse_gcode(";Prime the extruder\nG92 E0");
+
+    REQUIRE(p.num_blocks() == 2);
+  }
+
   
 }

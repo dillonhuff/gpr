@@ -146,6 +146,7 @@ namespace gpr {
     case 'r':
     case 's':
     case 'q':
+    case 'E':
       return new double_address(parse_double(s));
     case 'G':
     case 'H':
