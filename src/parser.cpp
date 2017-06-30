@@ -94,7 +94,7 @@ namespace gpr {
 
   double parse_double(parse_state& s) {
     size_t j = s.i;
-    double v =stod(string_remaining(s), &j);
+    double v = stod(string_remaining(s), &j);
     s.i += j;
     return v;
   }
