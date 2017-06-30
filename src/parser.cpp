@@ -226,6 +226,7 @@ namespace gpr {
       string cs = parse_comment_with_delimiters('(', ')', s);
       return new comment('(', ')', cs);
     } else if (s.next() == ';') {
+      s++;
       string cs = parse_line_comment_with_delimiter(';', s);
       return new comment(';', ';', cs);
     } else {
