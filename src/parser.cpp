@@ -182,15 +182,6 @@ namespace gpr {
       s++;
     }
 
-    // do {
-    //   if (s.next() == sc) { depth++; }
-    //   else if (s.next() == ec) { depth--; }
-    //   else {
-    // 	text += s.next();
-    //   }
-    //   s++;      
-    // } while (s.chars_left() && depth > 0);
-
     return text;
   }
 
