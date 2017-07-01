@@ -88,12 +88,10 @@ namespace gpr {
   // chunk is the superclass of all objects that can appear in a block.
   // A chunk can be either a comment or a word-address pair
   // For example in the G-code program below:
-  //
-  // (*** Toolpath 1 ***)
-  // G0 X0.0 Y0.0 Z0.0
-  // G1 X1.0 F23.0
-  // G1 Z-1.0 F10.0
-  //
+  //      (*** Toolpath 1 ***)
+  //      G0 X0.0 Y0.0 Z0.0
+  //      G1 X1.0 F23.0
+  //      G1 Z-1.0 F10.0
   // The program consits of 4 blocks (block is just G-code speak for line).
   // The first block contains 1 chunk, which is the comment "(*** Toolpath 1 ***)".
   // The second block contains 4 chunks, each of which is a pair of a word
@@ -197,12 +195,10 @@ namespace gpr {
   bool operator!=(const chunk& l, const chunk& r);
 
   // A block is really just a line of code, so for example the following program:
-  //
-  // (*** Toolpath 1 ***)
-  // G0 X0.0 Y0.0 Z0.0
-  // G1 X1.0 F23.0
-  // G1 Z-1.0 F10.0
-  //
+  //      (*** Toolpath 1 ***)
+  //      G0 X0.0 Y0.0 Z0.0
+  //      G1 X1.0 F23.0
+  //      G1 Z-1.0 F10.0
   // consists of 4 blocks
   class block {
   protected:
