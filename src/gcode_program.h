@@ -14,7 +14,7 @@ namespace gpr {
 
   class address {
   public:
-    virtual address_type addr_tp() const { assert(false); }
+    //    virtual address_type addr_tp() const = 0; // { assert(false); }
     virtual bool equals(const address& other) const = 0;
     virtual address_type tp() const = 0;
     virtual void print(std::ostream& stream) const = 0;
