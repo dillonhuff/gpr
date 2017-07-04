@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -99,7 +100,7 @@ namespace gpr {
   // In X0.0 the word is 'X' and the address is '0.0', and so on.
   class chunk {
   public:
-    virtual chunk_type tp() const = 0;// { assert(false); }
+    virtual chunk_type tp() const = 0;
     virtual ~chunk() {}
     virtual bool equals(const chunk& other) const = 0;
     virtual void print(std::ostream& stream) const = 0;
