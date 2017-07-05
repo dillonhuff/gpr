@@ -125,6 +125,13 @@ namespace gpr {
     }
 
     void print(std::ostream& out) const {
+      if (tp() == ADDRESS_TYPE_DOUBLE) {
+	out << double_value();
+	return;
+      }
+
+      out << int_value();
+
     }
 
   };
