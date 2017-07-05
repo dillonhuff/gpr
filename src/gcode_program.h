@@ -157,12 +157,6 @@ namespace gpr {
 	assert(false);
       }
 
-      // const comment& other_comment =
-      // 	static_cast<const comment&>(other);
-
-      // return (comment_text == other_comment.comment_text) &&
-      // 	(left_delim == other_comment.left_delim) &&
-      // 	(right_delim == other_comment.right_delim);
     }
 
     void print_comment(std::ostream& stream) const {
@@ -220,12 +214,6 @@ namespace gpr {
       line_no(-1),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {}
-
-    // ~block() {
-    //   for (unsigned i = 0; i < chunks.size(); i++) {
-    // 	delete chunks[i];
-    //   }
-    // }
 
     block(const block& other) :
       has_line_no(other.has_line_no),
