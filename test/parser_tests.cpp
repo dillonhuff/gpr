@@ -112,5 +112,20 @@ namespace gpr {
     REQUIRE(p.num_blocks() == 2);
   }
 
+  TEST_CASE("Make sure block text gets saved") {
+
+    gcode_program p =
+      parse_gcode_saving_block_text("(*** Toolpath 2 ***)\n G0 X1.5 Y0.0 Z0.0 \n N103 G1 X1.0 F23.0\nG1 Z-1.0 F10.0");
+    
+    REQUIRE(p.num_blocks() == 4);
+
+    string expected_text_for_block_0 = "(*** Toolpath 2 ***) ";
+    REQUIRE(p.get_block(0).get_text() == expected_text_for_block_0);
+    
+    string expected_text_for_block_1 = "G0 X1.5 Y0 Z0 ";
+    REQUIRE(p.get_block(1).get_text() == expected_text_for_block_1);
+
+  }
+
   
 }

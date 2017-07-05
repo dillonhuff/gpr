@@ -180,7 +180,7 @@ namespace gpr {
     }
 
     void print_comment(std::ostream& stream) const {
-      stream << left_delim << " " << comment_text << " " << right_delim;
+      stream << left_delim << comment_text << right_delim;
     }
 
     void print_word_address(std::ostream& stream) const {
@@ -233,7 +233,7 @@ namespace gpr {
       line_no(p_line_no),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {
-      set_block_text();
+      set_text();
     }
 
     block(const bool p_slashed_out,
@@ -242,7 +242,7 @@ namespace gpr {
       line_no(-1),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {
-      set_block_text();
+      set_text();
     }
 
     block(const block& other) :
@@ -254,7 +254,7 @@ namespace gpr {
 	chunks.push_back( other.chunks[i] );
       }
 
-      set_block_text();
+      set_text();
     }
     
     block& operator=(const block& other) {
@@ -265,11 +265,17 @@ namespace gpr {
 	chunks.push_back( other.chunks[i] );
       }
 
-      set_block_text();
+      set_text();
       return *this;
     }
 
-    void set_block_text() {
+    std::string get_text() const {
+      std::ostringstream ss;
+      this->print(ss);
+      return ss.str();
+    }
+
+    void set_text() {
       std::ostringstream ss;
       this->print(ss);
       block_text = ss.str();
