@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -205,6 +206,8 @@ namespace gpr {
   bool operator==(const chunk& l, const chunk& r);
   bool operator!=(const chunk& l, const chunk& r);
 
+  std::ostream& operator<<(std::ostream& stream, const chunk& ic);
+
   // A block is really just a line of code, so for example the following program:
   //      (*** Toolpath 1 ***)
   //      G0 X0.0 Y0.0 Z0.0
@@ -218,6 +221,10 @@ namespace gpr {
     bool slashed_out;
     std::vector<chunk> chunks;
 
+
+    // Used to make viewing more convenient during debugging
+    std::string block_text;
+
   public:
     block(const int p_line_no,
 	  const bool p_slashed_out,
@@ -225,14 +232,18 @@ namespace gpr {
       has_line_no(true),
       line_no(p_line_no),
       slashed_out(p_slashed_out),
-      chunks(p_chunks) {}
+      chunks(p_chunks) {
+      set_block_text();
+    }
 
     block(const bool p_slashed_out,
 	  const std::vector<chunk> p_chunks) :
       has_line_no(false),
       line_no(-1),
       slashed_out(p_slashed_out),
-      chunks(p_chunks) {}
+      chunks(p_chunks) {
+      set_block_text();
+    }
 
     block(const block& other) :
       has_line_no(other.has_line_no),
@@ -242,6 +253,8 @@ namespace gpr {
       for (unsigned i = 0; i < other.chunks.size(); i++) {
 	chunks.push_back( other.chunks[i] );
       }
+
+      set_block_text();
     }
     
     block& operator=(const block& other) {
@@ -252,7 +265,21 @@ namespace gpr {
 	chunks.push_back( other.chunks[i] );
       }
 
+      set_block_text();
       return *this;
+    }
+
+    void set_block_text() {
+      std::ostringstream ss;
+      this->print(ss);
+      block_text = ss.str();
+    }
+
+    void print(std::ostream& stream) const {
+      if (has_line_number()) {
+	stream << "N" << line_number() << " ";
+      }
+      for (auto i : *this) { stream << i << " "; }
     }
 
     int size() const { return chunks.size(); }
@@ -304,8 +331,6 @@ namespace gpr {
     std::vector<block>::iterator end() { return std::end(blocks); }
 
   };
-
-  std::ostream& operator<<(std::ostream& stream, const chunk& ic);
 
   std::ostream& operator<<(std::ostream& stream, const block& block);
 

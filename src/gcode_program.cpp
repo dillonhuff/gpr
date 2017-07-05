@@ -10,10 +10,7 @@ namespace gpr {
    }
 
   ostream& operator<<(ostream& stream, const block& block) {
-    if (block.has_line_number()) {
-      stream << "N" << block.line_number() << " ";
-    }
-    for (auto i : block) { stream << i << " "; }
+    block.print(stream);
     return stream;
   }
 
