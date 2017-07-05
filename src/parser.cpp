@@ -303,7 +303,7 @@ namespace gpr {
   gcode_program parse_gcode_saving_block_text(const std::string& program_text) {
     auto blocks = lex_gprog(program_text);
     for (auto& b : blocks) {
-      b.set_text();
+      b.set_debug_text();
     }
     return gcode_program(blocks);
   }

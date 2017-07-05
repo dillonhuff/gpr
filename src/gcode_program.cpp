@@ -48,5 +48,11 @@ namespace gpr {
   bool operator!=(const chunk& l, const chunk& r) {
     return !(l == r);
   }
+
+  chunk make_comment(const char start_delim,
+		     const char end_delim,
+		     const std::string& comment_text) {
+    return chunk(start_delim, end_delim, comment_text);
+  }
   
 }

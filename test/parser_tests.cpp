@@ -120,10 +120,10 @@ namespace gpr {
     REQUIRE(p.num_blocks() == 4);
 
     string expected_text_for_block_0 = "(*** Toolpath 2 ***) ";
-    REQUIRE(p.get_block(0).get_text() == expected_text_for_block_0);
+    REQUIRE(p.get_block(0).to_string() == expected_text_for_block_0);
     
     string expected_text_for_block_1 = "G0 X1.5 Y0 Z0 ";
-    REQUIRE(p.get_block(1).get_text() == expected_text_for_block_1);
+    REQUIRE(p.get_block(1).to_string() == expected_text_for_block_1);
 
   }
 

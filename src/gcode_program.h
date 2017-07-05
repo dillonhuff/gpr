@@ -200,6 +200,10 @@ namespace gpr {
 
   };
 
+  chunk make_comment(const char start_delim,
+		     const char end_delim,
+		     const std::string& comment_text);
+
   chunk make_word_int(const char c, const int i);
   chunk make_word_double(const char c, const double i);
 
@@ -223,7 +227,7 @@ namespace gpr {
 
 
     // Used to make viewing more convenient during debugging
-    std::string block_text;
+    std::string debug_text;
 
   public:
     block(const int p_line_no,
@@ -233,7 +237,6 @@ namespace gpr {
       line_no(p_line_no),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {
-      set_text();
     }
 
     block(const bool p_slashed_out,
@@ -242,7 +245,6 @@ namespace gpr {
       line_no(-1),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {
-      set_text();
     }
 
     block(const block& other) :
@@ -254,7 +256,6 @@ namespace gpr {
 	chunks.push_back( other.chunks[i] );
       }
 
-      set_text();
     }
     
     block& operator=(const block& other) {
@@ -265,22 +266,28 @@ namespace gpr {
 	chunks.push_back( other.chunks[i] );
       }
 
-      set_text();
       return *this;
     }
 
-    std::string get_text() const {
+    std::string to_string() const {
       std::ostringstream ss;
       this->print(ss);
       return ss.str();
     }
 
-    void set_text() {
-      std::ostringstream ss;
-      this->print(ss);
-      block_text = ss.str();
+    // Call this function on a block to set the variable block_text
+    // to string representing the block. This is useful when you want
+    // to view information about the block in the debugger
+    void set_debug_text(const std::string& text) {
+      debug_text = text;
     }
 
+    // Default version of set_debug text that sets the debug text string
+    // to a string representation of the block
+    void set_debug_text() {
+      set_debug_text(this->to_string());
+    }
+    
     void print(std::ostream& stream) const {
       if (has_line_number()) {
 	stream << "N" << line_number() << " ";
