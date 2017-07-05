@@ -79,7 +79,56 @@ namespace gpr {
     }
     
   };
-  
+
+  union addr_value {
+    double dbl_val;
+    int int_val;
+  };
+
+  class addr {
+  private:
+    address_type ad_type;
+    addr_value val;
+
+  public:
+
+    addr(const address_type& p_ad_type,
+	 const addr_value& p_val) {
+      ad_type = p_ad_type;
+      val = p_val;
+    }
+
+    address_type tp() const { return ad_type; }
+
+    double double_value() const {
+      assert(tp() == ADDRESS_TYPE_DOUBLE);
+
+      return val.dbl_val;
+    }
+
+    int int_value() const {
+      assert(tp() == ADDRESS_TYPE_INTEGER);
+
+      return val.int_val;
+    }
+
+    bool equals(const addr& other) const {
+      if (other.tp() != tp()) {
+	return false;
+      }
+
+      if (other.tp() == ADDRESS_TYPE_DOUBLE) {
+	return other.double_value() == double_value();
+      }
+
+      return other.int_value() == int_value();
+    }
+
+    void print(std::ostream& out) const {
+    }
+
+  };
+
   enum chunk_type {
     CHUNK_TYPE_COMMENT,
     CHUNK_TYPE_WORD_ADDRESS
@@ -152,29 +201,27 @@ namespace gpr {
   class word_address : public chunk {
   protected:
     const char wd;
-    const address* const addr;
+    //const address* const addr;
+    addr adr;
 
   public:
 
     word_address(const char p_wd,
-		 const address* const p_addr) :
+		 const addr p_adr) :
+		 //const address* const p_addr) :
       wd(p_wd),
-      addr(p_addr)
+      adr(p_adr)
     {}
 
-    ~word_address() {
-      delete addr;
-    }
-
     chunk* copy() const {
-      return new word_address(wd, addr->copy());
+      return new word_address(wd, adr); //addr->copy());
     }
     
     virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
 
     void print(std::ostream& stream) const {
       stream << wd;
-      addr->print(stream);
+      adr.print(stream);
     }
 
     bool equals(const chunk& other) const {
@@ -183,7 +230,7 @@ namespace gpr {
       }
 
       const word_address& other_addr = static_cast<const word_address&>(other);
-      return (wd == other_addr.wd) && (addr->equals(*(other_addr.addr)));
+      return (wd == other_addr.wd) && (adr.equals(other_addr.adr));
     }
 
   };
@@ -305,5 +352,9 @@ namespace gpr {
   std::ostream& operator<<(std::ostream& stream, const block& block);
 
   std::ostream& operator<<(std::ostream& stream, const gcode_program& program);
+
+  addr make_int_address(const int i);
+
+  addr make_double_address(const double i);
   
 }

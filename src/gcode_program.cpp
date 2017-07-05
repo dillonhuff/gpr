@@ -21,14 +21,27 @@ namespace gpr {
     for (auto b : program) { stream << b << endl; }
     return stream;
   }
+
+  addr make_int_address(const int i) {
+    addr_value v;
+    v.int_val = i;
+    return addr{ADDRESS_TYPE_INTEGER, v};
+  }
+
+  addr make_double_address(const double i) {
+    addr_value v;
+    v.dbl_val = i;
+    return addr{ADDRESS_TYPE_DOUBLE, v};
+  }
   
   std::unique_ptr<word_address> make_word_int(const char c, const int i) {
-    const int_address* const int_addr = new int_address(i);
-    return std::unique_ptr<word_address>(new word_address(c, int_addr));
+    //const int_address* const int_addr = new int_address(i);
+    addr int_address = make_int_address(i);
+    return std::unique_ptr<word_address>(new word_address(c, int_address));
   }
 
   std::unique_ptr<word_address> make_word_double(const char c, const double i) {
-    const double_address* const double_addr = new double_address(i);
+    addr double_addr = make_double_address(i);
     return std::unique_ptr<word_address>(new word_address(c, double_addr));
   }
 

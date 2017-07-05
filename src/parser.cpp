@@ -124,7 +124,7 @@ namespace gpr {
     return def;
   }
 
-  address* parse_address(char c, parse_state& s) {
+  addr parse_address(char c, parse_state& s) {
     switch(c) {
     case 'X':
     case 'Y':
@@ -147,7 +147,7 @@ namespace gpr {
     case 's':
     case 'q':
     case 'E':
-      return new double_address(parse_double(s));
+      return make_double_address(parse_double(s));
     case 'G':
     case 'H':
     case 'M':
@@ -166,7 +166,7 @@ namespace gpr {
     case 'p':
     case 'd':
     case 'l':
-      return new int_address(parse_int(s));
+      return make_int_address(parse_int(s));
     default:
       cout << "Invalid c = " << c << endl;
       cout << "Inavlid c as int = " << ((int) c) << endl;
@@ -204,7 +204,7 @@ namespace gpr {
     char c = s.next();
     s++;
 
-    address* a = parse_address(c, s);
+    addr a = parse_address(c, s);
     return new word_address(c, a);
   }
 
