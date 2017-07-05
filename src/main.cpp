@@ -16,7 +16,7 @@ using namespace std;
 int main(int argc, char** argv) {
   if (argc == 1) {
     cout << "We are going to create a new block programatically ";
-    cout << "and print it out" << endl;
+    cout << "and print it out:" << endl;
 
     chunk G1 = make_word_int('G', 1);
     chunk X1pt7 = make_word_double('X', 1.7);
