@@ -275,14 +275,14 @@ namespace gpr {
       return ss.str();
     }
 
-    // Call this function on a block to set the variable block_text
-    // to string representing the block. This is useful when you want
+    // Call this function on a block to set the variable debug_text.
+    // This is useful when you want
     // to view information about the block in the debugger
     void set_debug_text(const std::string& text) {
       debug_text = text;
     }
 
-    // Default version of set_debug text that sets the debug text string
+    // Default version of set_debug_text that sets the debug text string
     // to a string representation of the block
     void set_debug_text() {
       set_debug_text(this->to_string());
