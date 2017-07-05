@@ -122,13 +122,31 @@ namespace gpr {
     
     chunk_type tp() const { return chunk_tp; }
 
-    char get_left_delim() const { return left_delim; }
-    char get_right_delim() const { return right_delim; }
-    std::string get_comment_text() const { return comment_text; }
+    char get_left_delim() const {
+      assert(tp() == CHUNK_TYPE_COMMENT);
+      return left_delim;
+    }
+
+    char get_right_delim() const {
+      assert(tp() == CHUNK_TYPE_COMMENT);
+      return right_delim;
+    }
+
+    std::string get_comment_text() const {
+      assert(tp() == CHUNK_TYPE_COMMENT);
+      return comment_text;
+    }
 
 
-    char get_word() const { return wd; }
-    addr get_address() const { return adr; }
+    char get_word() const {
+      assert(tp() == CHUNK_TYPE_WORD_ADDRESS);
+      return wd;
+    }
+
+    addr get_address() const {
+      assert(tp() == CHUNK_TYPE_WORD_ADDRESS);
+      return adr;
+    }
     
     bool equals_word_address(const chunk& other_addr) const {
       assert(other_addr.tp() == CHUNK_TYPE_WORD_ADDRESS);
