@@ -200,26 +200,26 @@ namespace gpr {
     return text;
   }
 
-  word_address* parse_word_address(parse_state& s) {
+  chunk parse_word_address(parse_state& s) {
     char c = s.next();
     s++;
 
     addr a = parse_address(c, s);
-    return new word_address(c, a);
+    return chunk(c, a);
   }
 
-  chunk* parse_chunk(parse_state& s) {
+  chunk parse_chunk(parse_state& s) {
 
     if (s.next() == '[') {
       string cs = parse_comment_with_delimiters('[', ']', s);
-      return new comment('[', ']', cs);
+      return chunk('[', ']', cs);
     } else if (s.next() == '(') {
       string cs = parse_comment_with_delimiters('(', ')', s);
-      return new comment('(', ')', cs);
+      return chunk('(', ')', cs);
     } else if (s.next() == ';') {
       s++;
       string cs = parse_line_comment_with_delimiter(';', s);
-      return new comment(';', ';', cs);
+      return chunk(';', ';', cs);
     } else {
       return parse_word_address(s);
     }
@@ -249,7 +249,7 @@ namespace gpr {
   block lex_gprog_line(const string& str) {
     parse_state s(str);
 
-    vector<chunk*> chunks;
+    vector<chunk> chunks;
 
     ignore_whitespace(s);
 
@@ -264,7 +264,7 @@ namespace gpr {
       ignore_whitespace(s);
       if (!s.chars_left()) { break; }
 
-      chunk* ch = parse_chunk(s);
+      chunk ch = parse_chunk(s);
       chunks.push_back(ch);
       
     }

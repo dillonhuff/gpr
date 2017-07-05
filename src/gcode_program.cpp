@@ -13,7 +13,7 @@ namespace gpr {
     if (block.has_line_number()) {
       stream << "N" << block.line_number() << " ";
     }
-    for (auto i : block) { stream << *i << " "; }
+    for (auto i : block) { stream << i << " "; }
     return stream;
   }
 
@@ -34,15 +34,14 @@ namespace gpr {
     return addr{ADDRESS_TYPE_DOUBLE, v};
   }
   
-  std::unique_ptr<word_address> make_word_int(const char c, const int i) {
-    //const int_address* const int_addr = new int_address(i);
+  chunk make_word_int(const char c, const int i) {
     addr int_address = make_int_address(i);
-    return std::unique_ptr<word_address>(new word_address(c, int_address));
+    return chunk(c, int_address);
   }
 
-  std::unique_ptr<word_address> make_word_double(const char c, const double i) {
+  chunk make_word_double(const char c, const double i) {
     addr double_addr = make_double_address(i);
-    return std::unique_ptr<word_address>(new word_address(c, double_addr));
+    return chunk(c, double_addr);
   }
 
   bool operator==(const chunk& l, const chunk& r) {

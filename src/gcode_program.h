@@ -88,95 +88,170 @@ namespace gpr {
   // G0, X0.0, Y0.0, and Z0.0. In G0 the word is 'G' and the address is '0'.
   // In X0.0 the word is 'X' and the address is '0.0', and so on.
   class chunk {
-  public:
-    virtual chunk_type tp() const = 0;
-    virtual ~chunk() {}
-    virtual bool equals(const chunk& other) const = 0;
-    virtual void print(std::ostream& stream) const = 0;
-    virtual chunk* copy() const = 0;
-  };
+  private:
+    chunk_type chunk_tp;
 
-  class comment : public chunk {
-  protected:
+    // Comment fields;
     char left_delim;
     char right_delim;
     std::string comment_text;
 
+    // Word-address fields
+    char wd;
+    addr adr;
+    
   public:
-    comment(const char p_left_delim,
-	    const char p_right_delim,
-	    const std::string& p_comment_text) :
+    chunk(const char p_left_delim,
+	  const char p_right_delim,
+	  const std::string& p_comment_text) :
+      chunk_tp(CHUNK_TYPE_COMMENT),
       left_delim(p_left_delim),
       right_delim(p_right_delim),
-      comment_text(p_comment_text)
+      comment_text(p_comment_text),
+      wd('\0'),
+      adr(ADDRESS_TYPE_INTEGER, {-1})
     {}
 
-    chunk_type tp() const { return CHUNK_TYPE_COMMENT; }
-
-    chunk* copy() const {
-      return new comment(left_delim, right_delim, comment_text);
-    }
-      
-    virtual bool equals(const chunk& other) const {
-      if (other.tp() != CHUNK_TYPE_COMMENT) {
-	return false;
-      }
-
-      const comment& other_comment =
-	static_cast<const comment&>(other);
-
-      return (comment_text == other_comment.comment_text) &&
-	(left_delim == other_comment.left_delim) &&
-	(right_delim == other_comment.right_delim);
-    }
-
-    void print(std::ostream& stream) const {
-      stream << left_delim << " " << comment_text << " " << right_delim;
-    }
-    
-    ~comment() {}
-
-  };
-
-  class word_address : public chunk {
-  protected:
-    const char wd;
-    //const address* const addr;
-    addr adr;
-
-  public:
-
-    word_address(const char p_wd,
-		 const addr p_adr) :
-		 //const address* const p_addr) :
+    chunk(const char p_wd,
+	  const addr p_adr) :
+      chunk_tp(CHUNK_TYPE_WORD_ADDRESS),
       wd(p_wd),
       adr(p_adr)
     {}
+    
+    chunk_type tp() const { return chunk_tp; }
 
-    chunk* copy() const {
-      return new word_address(wd, adr); //addr->copy());
+    char get_left_delim() const { return left_delim; }
+    char get_right_delim() const { return right_delim; }
+    std::string get_comment_text() const { return comment_text; }
+
+
+    char get_word() const { return wd; }
+    addr get_address() const { return adr; }
+    
+    bool equals_word_address(const chunk& other_addr) const {
+      assert(other_addr.tp() == CHUNK_TYPE_WORD_ADDRESS);
+
+      return (get_word() == other_addr.get_word()) &&
+	(get_address().equals(other_addr.get_address()));
     }
     
-    virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
+    bool equals_comment(const chunk& other_comment) const {
+      assert(other_comment.tp() == CHUNK_TYPE_COMMENT);
 
-    void print(std::ostream& stream) const {
-      stream << wd;
-      adr.print(stream);
+      return (get_comment_text() == other_comment.get_comment_text()) &&
+  	(get_left_delim() == other_comment.get_left_delim()) &&
+  	(get_right_delim() == other_comment.get_right_delim());
     }
-
-    bool equals(const chunk& other) const {
-      if (other.tp() != CHUNK_TYPE_WORD_ADDRESS) {
+    
+    virtual bool equals(const chunk& other) const {
+      if (other.tp() != tp()) {
 	return false;
       }
 
-      const word_address& other_addr = static_cast<const word_address&>(other);
-      return (wd == other_addr.wd) && (adr.equals(other_addr.adr));
+      if (tp() == CHUNK_TYPE_WORD_ADDRESS) {
+	return equals_word_address(other);
+      } else if (tp() == CHUNK_TYPE_COMMENT) {
+	return equals_comment(other);
+      } else {
+	assert(false);
+      }
+
+      // const comment& other_comment =
+      // 	static_cast<const comment&>(other);
+
+      // return (comment_text == other_comment.comment_text) &&
+      // 	(left_delim == other_comment.left_delim) &&
+      // 	(right_delim == other_comment.right_delim);
+    }
+
+    void print_comment(std::ostream& stream) const {
+      stream << left_delim << " " << comment_text << " " << right_delim;
+    }
+
+    void print_word_address(std::ostream& stream) const {
+      stream << wd;
+      adr.print(stream);
+    }
+    
+    void print(std::ostream& stream) const {
+      if (tp() == CHUNK_TYPE_COMMENT) {
+	print_comment(stream);
+      } else if (tp() == CHUNK_TYPE_WORD_ADDRESS) {
+	print_word_address(stream);
+      } else {
+	assert(false);
+      }
     }
 
   };
 
-  std::unique_ptr<word_address> make_word_int(const char c, const int i);
-  std::unique_ptr<word_address> make_word_double(const char c, const double i);
+  // class chunk {
+  // public:
+  //   virtual chunk_type tp() const = 0;
+  //   virtual ~chunk() {}
+  //   virtual bool equals(const chunk& other) const = 0;
+  //   virtual void print(std::ostream& stream) const = 0;
+  //   virtual chunk* copy() const = 0;
+  // };
+
+  // class comment : public chunk {
+  // protected:
+  //   char left_delim;
+  //   char right_delim;
+  //   std::string comment_text;
+
+  // public:
+  //   comment(const char p_left_delim,
+  // 	    const char p_right_delim,
+  // 	    const std::string& p_comment_text) :
+  //     left_delim(p_left_delim),
+  //     right_delim(p_right_delim),
+  //     comment_text(p_comment_text)
+  //   {}
+
+  //   chunk_type tp() const { return CHUNK_TYPE_COMMENT; }
+
+  //   chunk* copy() const {
+  //     return new comment(left_delim, right_delim, comment_text);
+  //   }
+      
+
+  //   void print(std::ostream& stream) const {
+  //     stream << left_delim << " " << comment_text << " " << right_delim;
+  //   }
+    
+  //   ~comment() {}
+
+  // };
+
+  // class word_address : public chunk {
+  // protected:
+  //   const char wd;
+  //   //const address* const addr;
+  //   addr adr;
+
+  // public:
+
+  //   word_address(const char p_wd,
+  // 		 const addr p_adr) :
+  // 		 //const address* const p_addr) :
+  //     wd(p_wd),
+  //     adr(p_adr)
+  //   {}
+
+  //   chunk* copy() const {
+  //     return new word_address(wd, adr); //addr->copy());
+  //   }
+    
+  //   virtual chunk_type tp() const { return CHUNK_TYPE_WORD_ADDRESS; }
+
+
+
+  // };
+
+  chunk make_word_int(const char c, const int i);
+  chunk make_word_double(const char c, const double i);
 
   bool operator==(const chunk& l, const chunk& r);
   bool operator!=(const chunk& l, const chunk& r);
@@ -192,29 +267,29 @@ namespace gpr {
     bool has_line_no;
     int line_no;
     bool slashed_out;
-    std::vector<chunk*> chunks;
+    std::vector<chunk> chunks;
 
   public:
     block(const int p_line_no,
 	  const bool p_slashed_out,
-	  const std::vector<chunk*> p_chunks) :
+	  const std::vector<chunk> p_chunks) :
       has_line_no(true),
       line_no(p_line_no),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {}
 
     block(const bool p_slashed_out,
-	  const std::vector<chunk*> p_chunks) :
+	  const std::vector<chunk> p_chunks) :
       has_line_no(false),
       line_no(-1),
       slashed_out(p_slashed_out),
       chunks(p_chunks) {}
 
-    ~block() {
-      for (unsigned i = 0; i < chunks.size(); i++) {
-	delete chunks[i];
-      }
-    }
+    // ~block() {
+    //   for (unsigned i = 0; i < chunks.size(); i++) {
+    // 	delete chunks[i];
+    //   }
+    // }
 
     block(const block& other) :
       has_line_no(other.has_line_no),
@@ -222,7 +297,7 @@ namespace gpr {
       slashed_out(other.slashed_out) {
 
       for (unsigned i = 0; i < other.chunks.size(); i++) {
-	chunks.push_back( (other.chunks[i])->copy() );
+	chunks.push_back( other.chunks[i] );
       }
     }
     
@@ -231,7 +306,7 @@ namespace gpr {
       line_no = other.line_no;
       slashed_out = other.slashed_out;
       for (unsigned i = 0; i < other.chunks.size(); i++) {
-	chunks.push_back( (other.chunks[i])->copy() );
+	chunks.push_back( other.chunks[i] );
       }
 
       return *this;
@@ -242,7 +317,7 @@ namespace gpr {
     const chunk& get_chunk(const int i) {
       assert(i < size());
 
-      return *(chunks[i]);
+      return chunks[i];
     }
 
     bool is_deleted() const { return slashed_out; }
@@ -256,11 +331,11 @@ namespace gpr {
       return line_no;
     }
 
-    std::vector<chunk*>::const_iterator begin() const { return std::begin(chunks); }
-    std::vector<chunk*>::const_iterator end() const { return std::end(chunks); }
+    std::vector<chunk>::const_iterator begin() const { return std::begin(chunks); }
+    std::vector<chunk>::const_iterator end() const { return std::end(chunks); }
 
-    std::vector<chunk*>::iterator begin() { return std::begin(chunks); }
-    std::vector<chunk*>::iterator end() { return std::end(chunks); }
+    std::vector<chunk>::iterator begin() { return std::begin(chunks); }
+    std::vector<chunk>::iterator end() { return std::end(chunks); }
     
   };
 
