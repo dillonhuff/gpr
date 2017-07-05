@@ -73,8 +73,10 @@ namespace gpr {
     CHUNK_TYPE_WORD_ADDRESS
   };
 
-  // chunk is the superclass of all objects that can appear in a block.
-  // A chunk can be either a comment or a word-address pair
+  // chunk is the class that represents all data that can appear in a block.
+  // A chunk can be either a comment or a word-address pair. The vaue of the
+  // field chunk_tp is CHUNK_TYPE_COMMENT if the chunk is a comment and is
+  // CHUNK_TYPE_WORD_ADDRESS if the chunk is a word-address pair
   // For example in the G-code program below:
   //      (*** Toolpath 1 ***)
   //      G0 X0.0 Y0.0 Z0.0
