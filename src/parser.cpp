@@ -314,6 +314,13 @@ namespace gpr {
     }
 
     switch(c) {
+    case '%':
+      s++;
+      return "%";
+    case '/':
+      s++;
+      return "/";
+
     case 'X':
     case 'Y':
     case 'Z':
@@ -372,31 +379,12 @@ namespace gpr {
 
     ignore_whitespace(s);
 
-    // bool is_slashed = parse_slash(s);
-
-    // ignore_whitespace(s);
-
-    // std::pair<bool, int> line_no =
-    //   parse_line_number(s);
-
     while (s.chars_left()) {
       ignore_whitespace(s);
       string token = lex_token(s);
       tokens.push_back(token);
-      // ignore_whitespace(s);
-      // if (!s.chars_left()) { break; }
-
-      // chunk ch = parse_chunk(s);
-      // chunks.push_back(ch);
-      
     }
 
-    // if (line_no.first) {
-    //   return block(line_no.second, is_slashed, chunks);
-    // } else {
-    //   return block(is_slashed, chunks);
-    // }
-    
     return tokens;
   }
 

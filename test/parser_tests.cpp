@@ -128,10 +128,14 @@ namespace gpr {
   }
 
   TEST_CASE("Lex block with isolated P word") {
-    string program = "G99 G82 R0.1 Z-0.1227 P F15.04";
+    string program = "/%G99 G82 R0.1 Z-0.1227 P %F15.04";
     vector<string> lexed_line = lex_block(program);
 
-    REQUIRE(lexed_line.size() == 11);
+    for (auto& s : lexed_line) {
+      cout << s << endl;
+    }
+
+    REQUIRE(lexed_line.size() == 13);
 
   }
 
