@@ -87,6 +87,20 @@ namespace gpr {
       comment_text(p_comment_text) {}
   };
 
+  struct word_address_data {
+    char wd;
+    addr adr;
+
+    word_address_data() :
+      wd('\0'),
+      adr(ADDRESS_TYPE_INTEGER, {-1}) {}
+
+    word_address_data(const char p_wd,
+		      const addr p_adr) :
+      wd(p_wd), adr(p_adr) {}
+    
+  };
+
   // chunk is the class that represents all data that can appear in a block.
   // A chunk can be either a comment or a word-address pair. The vaue of the
   // field chunk_tp is CHUNK_TYPE_COMMENT if the chunk is a comment and is
@@ -110,25 +124,21 @@ namespace gpr {
     comment_data cd;
 
     // Word-address fields
-    char wd;
-    addr adr;
+    word_address_data wad;
     
   public:
     chunk(const char p_left_delim,
 	  const char p_right_delim,
 	  const std::string& p_comment_text) :
       chunk_tp(CHUNK_TYPE_COMMENT),
-      cd(p_left_delim, p_right_delim, p_comment_text),
-      wd('\0'),
-      adr(ADDRESS_TYPE_INTEGER, {-1})
+      cd(p_left_delim, p_right_delim, p_comment_text)
     {}
 
     chunk(const char p_wd,
 	  const addr p_adr) :
       chunk_tp(CHUNK_TYPE_WORD_ADDRESS),
       cd('(', ')', ""),
-      wd(p_wd),
-      adr(p_adr)
+      wad(p_wd, p_adr)
     {}
     
     chunk_type tp() const { return chunk_tp; }
@@ -151,12 +161,12 @@ namespace gpr {
 
     char get_word() const {
       assert(tp() == CHUNK_TYPE_WORD_ADDRESS);
-      return wd;
+      return wad.wd;
     }
 
     addr get_address() const {
       assert(tp() == CHUNK_TYPE_WORD_ADDRESS);
-      return adr;
+      return wad.adr;
     }
     
     bool equals_word_address(const chunk& other_addr) const {
@@ -194,8 +204,8 @@ namespace gpr {
     }
 
     void print_word_address(std::ostream& stream) const {
-      stream << wd;
-      adr.print(stream);
+      stream << wad.wd;
+      wad.adr.print(stream);
     }
     
     void print(std::ostream& stream) const {
