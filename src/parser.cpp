@@ -53,27 +53,6 @@ namespace gpr {
   };
 
   typedef parse_stream<char> parse_state;
-
-  int parse_i(parse_state& s) {
-    string digits = "";
-    while (s.chars_left() && isdigit(s.next())) {
-      digits += s.next();
-      s++;
-    }
-
-    int v = stoi(digits);
-    
-    return v;
-  }
-
-  double parse_dbl(parse_state& s) {
-    string text = "";
-    if (s.next() == '-') { text += s.next(); s++; }
-    while (s.chars_left() && isdigit(s.next())) { text += s.next(); s++; }
-    if (s.next() == '.') { text += s.next(); s++; }
-    while (s.chars_left() && isdigit(s.next())) { text += s.next(); s++; }
-    return atof(text.c_str());
-  }
   
   void ignore_whitespace(parse_state& s) {
     while (s.chars_left() && (isspace(s.next()) || s.next() == '%' || s.next() == '\r')) { s++; }
@@ -102,6 +81,7 @@ namespace gpr {
   int parse_int(parse_state& s) {
     size_t j = s.i;
 
+    cout << "Remaining = " << string_remaining(s) << endl;
     int v = stoi(string_remaining(s), &j);
 
     s.i += j;

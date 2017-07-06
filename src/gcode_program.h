@@ -74,6 +74,19 @@ namespace gpr {
     CHUNK_TYPE_WORD_ADDRESS
   };
 
+  struct comment_data {
+    char left_delim;
+    char right_delim;
+    std::string comment_text;
+
+    comment_data(const char p_left_delim,
+		 const char p_right_delim,
+		 const std::string& p_comment_text) :
+      left_delim(p_left_delim),
+      right_delim(p_right_delim),
+      comment_text(p_comment_text) {}
+  };
+
   // chunk is the class that represents all data that can appear in a block.
   // A chunk can be either a comment or a word-address pair. The vaue of the
   // field chunk_tp is CHUNK_TYPE_COMMENT if the chunk is a comment and is
@@ -94,9 +107,7 @@ namespace gpr {
     chunk_type chunk_tp;
 
     // Comment fields;
-    char left_delim;
-    char right_delim;
-    std::string comment_text;
+    comment_data cd;
 
     // Word-address fields
     char wd;
@@ -107,9 +118,7 @@ namespace gpr {
 	  const char p_right_delim,
 	  const std::string& p_comment_text) :
       chunk_tp(CHUNK_TYPE_COMMENT),
-      left_delim(p_left_delim),
-      right_delim(p_right_delim),
-      comment_text(p_comment_text),
+      cd(p_left_delim, p_right_delim, p_comment_text),
       wd('\0'),
       adr(ADDRESS_TYPE_INTEGER, {-1})
     {}
@@ -117,6 +126,7 @@ namespace gpr {
     chunk(const char p_wd,
 	  const addr p_adr) :
       chunk_tp(CHUNK_TYPE_WORD_ADDRESS),
+      cd('(', ')', ""),
       wd(p_wd),
       adr(p_adr)
     {}
@@ -125,17 +135,17 @@ namespace gpr {
 
     char get_left_delim() const {
       assert(tp() == CHUNK_TYPE_COMMENT);
-      return left_delim;
+      return cd.left_delim;
     }
 
     char get_right_delim() const {
       assert(tp() == CHUNK_TYPE_COMMENT);
-      return right_delim;
+      return cd.right_delim;
     }
 
     std::string get_comment_text() const {
       assert(tp() == CHUNK_TYPE_COMMENT);
-      return comment_text;
+      return cd.comment_text;
     }
 
 
@@ -180,7 +190,7 @@ namespace gpr {
     }
 
     void print_comment(std::ostream& stream) const {
-      stream << left_delim << comment_text << right_delim;
+      stream << get_left_delim() << get_comment_text() << get_right_delim();
     }
 
     void print_word_address(std::ostream& stream) const {

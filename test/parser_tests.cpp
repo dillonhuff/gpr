@@ -129,6 +129,15 @@ namespace gpr {
 
   TEST_CASE("Full sample parsing") {
 
+    SECTION("Parse HAAS sample") {
+      std::ifstream t("./gcode_samples/HAAS_sample.NCF");
+      std::string file_contents((std::istreambuf_iterator<char>(t)),
+    				std::istreambuf_iterator<char>());
+
+      gcode_program p = parse_gcode(file_contents);
+      
+    }
+
     SECTION("Parse Cura sample") {
       std::ifstream t("./gcode_samples/cura_3D_printer.gcode");
       std::string file_contents((std::istreambuf_iterator<char>(t)),
@@ -142,14 +151,6 @@ namespace gpr {
       
     }
     
-    // SECTION("Parse HAAS sample") {
-    //   std::ifstream t("./gcode_samples/HAAS_sample.NCF");
-    //   std::string file_contents((std::istreambuf_iterator<char>(t)),
-    // 				std::istreambuf_iterator<char>());
-
-    //   gcode_program p = parse_gcode(file_contents);
-      
-    // }
   }
 
   
