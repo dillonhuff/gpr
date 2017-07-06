@@ -288,6 +288,83 @@ namespace gpr {
     return gcode_program(blocks);
   }
 
+  bool is_num_char(const char c) {
+    return (isdigit(c) ||
+	    (c == '.') ||
+	    (c == '-'));
+  }
+
+  std::string digit_string(parse_state& s) {
+    string num_str = "";
+
+    while (s.chars_left() && is_num_char(s.next())) {
+      num_str += s.next();
+      s++;
+    }
+
+    return num_str;
+  }
+
+  std::string lex_token(parse_state& s) {
+    char c = s.next();
+    string next_token = "";
+
+    if (is_num_char(c)) {
+      return digit_string(s);
+    }
+
+    switch(c) {
+    case 'X':
+    case 'Y':
+    case 'Z':
+    case 'I':
+    case 'J':
+    case 'K':
+    case 'F':
+    case 'R':
+    case 'Q':
+    case 'S':
+    case 'x':
+    case 'y':
+    case 'z':
+    case 'i':
+    case 'j':
+    case 'k':
+    case 'f':
+    case 'r':
+    case 's':
+    case 'q':
+    case 'E':
+    case 'G':
+    case 'H':
+    case 'M':
+    case 'N':
+    case 'O':
+    case 'T':
+    case 'P':
+    case 'D':
+    case 'L':
+    case 'g':
+    case 'h':
+    case 'm':
+    case 'n':
+    case 'o':
+    case 't':
+    case 'p':
+    case 'd':
+    case 'l':
+      next_token += c;
+      s++;
+      return next_token;
+    default:
+      cout << "Invalid c = " << c << endl;
+      cout << "Inavlid c as int = " << ((int) c) << endl;
+      cout << "Is EOF? " << (((int) c) == EOF) << endl;
+      assert(false);
+    }
+    
+  }
+
   std::vector<std::string> lex_block(const std::string& block_text) {
     parse_state s(block_text);
 
@@ -303,6 +380,9 @@ namespace gpr {
     //   parse_line_number(s);
 
     while (s.chars_left()) {
+      ignore_whitespace(s);
+      string token = lex_token(s);
+      tokens.push_back(token);
       // ignore_whitespace(s);
       // if (!s.chars_left()) { break; }
 
@@ -317,7 +397,7 @@ namespace gpr {
     //   return block(is_slashed, chunks);
     // }
     
-    return {};
+    return tokens;
   }
 
 }
