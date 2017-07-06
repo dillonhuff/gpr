@@ -127,5 +127,30 @@ namespace gpr {
 
   }
 
+  TEST_CASE("Full sample parsing") {
+
+    SECTION("Parse Cura sample") {
+      std::ifstream t("./gcode_samples/cura_3D_printer.gcode");
+      std::string file_contents((std::istreambuf_iterator<char>(t)),
+				std::istreambuf_iterator<char>());
+
+      gcode_program p = parse_gcode(file_contents);
+
+      REQUIRE(p.get_block(233).get_chunk(2).get_word() == 'Y');
+
+      REQUIRE(p.get_block(1929).get_chunk(0).get_comment_text() == "TYPE:WALL-INNER");
+      
+    }
+    
+    // SECTION("Parse HAAS sample") {
+    //   std::ifstream t("./gcode_samples/HAAS_sample.NCF");
+    //   std::string file_contents((std::istreambuf_iterator<char>(t)),
+    // 				std::istreambuf_iterator<char>());
+
+    //   gcode_program p = parse_gcode(file_contents);
+      
+    // }
+  }
+
   
 }
