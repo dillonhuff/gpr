@@ -6,6 +6,7 @@
 
 namespace gpr {
 
+  std::vector<std::string> lex_block(const std::string& block_text);
 
   gcode_program parse_gcode(const std::string& program_text);
 

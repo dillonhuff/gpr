@@ -288,4 +288,9 @@ namespace gpr {
     return gcode_program(blocks);
   }
 
+  std::vector<std::string> lex_block(const std::string& block_text) {
+    
+    return {};
+  }
+
 }
