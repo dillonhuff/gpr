@@ -55,7 +55,7 @@ namespace gpr {
   typedef parse_stream<char> parse_state;
   
   void ignore_whitespace(parse_state& s) {
-    while (s.chars_left() && (isspace(s.next()) || s.next() == '%' || s.next() == '\r')) { s++; }
+    while (s.chars_left() && (isspace(s.next()) || s.next() == '\r')) { s++; }
   }
 
   string string_remaining(parse_state& ps) {
