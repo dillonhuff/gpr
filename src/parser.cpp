@@ -289,6 +289,33 @@ namespace gpr {
   }
 
   std::vector<std::string> lex_block(const std::string& block_text) {
+    parse_state s(block_text);
+
+    vector<string> tokens;
+
+    ignore_whitespace(s);
+
+    // bool is_slashed = parse_slash(s);
+
+    // ignore_whitespace(s);
+
+    // std::pair<bool, int> line_no =
+    //   parse_line_number(s);
+
+    while (s.chars_left()) {
+      // ignore_whitespace(s);
+      // if (!s.chars_left()) { break; }
+
+      // chunk ch = parse_chunk(s);
+      // chunks.push_back(ch);
+      
+    }
+
+    // if (line_no.first) {
+    //   return block(line_no.second, is_slashed, chunks);
+    // } else {
+    //   return block(is_slashed, chunks);
+    // }
     
     return {};
   }
