@@ -151,9 +151,9 @@ namespace gpr {
     }
   }
   
-  string parse_line_comment_with_delimiter(char sc, parse_state& s) {
+  string parse_line_comment_with_delimiter(string sc, parse_stream<string>& s) {
     string text = "";
-    while (s.chars_left() && s.next() != '\n') {
+    while (s.chars_left()) {
       text += s.next();
       s++;
     }
@@ -200,8 +200,6 @@ namespace gpr {
     char c = s.next()[0];
     s++;
 
-    cout << "value to be parsed in parse address = " << s.next() << endl;
-
     addr a = parse_address(c, s);
     return chunk(c, a);
   }
@@ -215,17 +213,12 @@ namespace gpr {
     } else if (s.next() == "(") {
       string cs = parse_comment_with_delimiters("(", ")", s);
 
-      cout << "Parsed comment = " << cs << endl;
-      cout << "Chars left ? " << s.chars_left() << endl;
-      cout << "Next s = " << s.next() << endl;
-
       return chunk('(', ')', cs);
 
     } else if (s.next() == ";") {
-      // s++;
-      // string cs = parse_line_comment_with_delimiter(';', s);
-      // return chunk(';', ';', cs);
-      assert(false);
+      s++;
+      string cs = parse_line_comment_with_delimiter(";", s);
+      return chunk(';', ';', cs);
     } else {
       return parse_word_address(s);
     }
@@ -279,11 +272,6 @@ namespace gpr {
   }
 
   block parse_tokens(const std::vector<string>& tokens) {
-    cout << "Parsing tokens: ";
-    for (auto& t : tokens) {
-      cout << t << " ";
-    }
-    cout << endl;
 
     parse_stream<string> s(tokens);
     vector<chunk> chunks;
@@ -362,7 +350,6 @@ namespace gpr {
     while (line_start < str.end()) {
       line_end = find(line_start, str.end(), '\n');
       string line(line_start, line_end);
-      cout << "Line to parse = " << line << endl;
 
       if (line.size() > 0) {
 	vector<string> line_tokens = lex_block(line);
@@ -492,7 +479,6 @@ namespace gpr {
   }
 
   std::vector<std::string> lex_block(const std::string& block_text) {
-    cout << "Lexing: " << block_text << endl;
     parse_state s(block_text);
 
     vector<string> tokens;
@@ -500,12 +486,10 @@ namespace gpr {
     ignore_whitespace(s);
 
     while (s.chars_left()) {
-      cout << "Remaining string = " << string_remaining(s) << endl;
       ignore_whitespace(s);
 
       if (s.chars_left()) {
 	string token = lex_token(s);
-	cout << "Pushing back token = " << token << endl;
 	tokens.push_back(token);
       }
     }
