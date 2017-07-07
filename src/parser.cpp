@@ -100,22 +100,6 @@ namespace gpr {
     return v;
   }
 
-  double parse_coordinate(char c, parse_state& s) {
-    ignore_whitespace(s);
-    assert(s.next() == c);
-    s++;
-    return parse_double(s);
-  }
-
-  double parse_option_coordinate(char c, parse_state& s, double def) {
-    ignore_whitespace(s);
-    if (s.next() == c) {
-      s++;
-      return parse_double(s);
-    }
-    return def;
-  }
-
   addr parse_address(char c, parse_stream<string>& s) {
     switch(c) {
     case 'X':
@@ -422,6 +406,8 @@ namespace gpr {
   }
 
   std::string lex_token(parse_state& s) {
+    assert(s.chars_left());
+
     char c = s.next();
     string next_token = "";
 
@@ -506,6 +492,7 @@ namespace gpr {
   }
 
   std::vector<std::string> lex_block(const std::string& block_text) {
+    cout << "Lexing: " << block_text << endl;
     parse_state s(block_text);
 
     vector<string> tokens;
@@ -513,9 +500,14 @@ namespace gpr {
     ignore_whitespace(s);
 
     while (s.chars_left()) {
+      cout << "Remaining string = " << string_remaining(s) << endl;
       ignore_whitespace(s);
-      string token = lex_token(s);
-      tokens.push_back(token);
+
+      if (s.chars_left()) {
+	string token = lex_token(s);
+	cout << "Pushing back token = " << token << endl;
+	tokens.push_back(token);
+      }
     }
 
     return tokens;
