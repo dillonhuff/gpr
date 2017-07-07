@@ -269,10 +269,15 @@ namespace gpr {
   }
 
   chunk parse_word_address(parse_stream<string>& s) {
+    cout << "Parsing address, next = " << s.next() << endl;
+
     assert(s.next().size() == 1);
 
     char c = s.next()[0];
     s++;
+
+    cout << "After that = " << s.next() << endl;
+
 
     addr a = parse_address(c, s);
     return chunk(c, a);
@@ -328,6 +333,21 @@ namespace gpr {
     return false;
   }
 
+  bool is_slash(const string& s) {
+    if (s.size() != 1) { return false; }
+
+    return s[0] == '/';
+  }
+
+  bool parse_slash(parse_stream<string>& s) {
+    if (is_slash(s.next())) {
+      s++;
+      return true;
+    }
+
+    return false;
+  }
+  
   std::pair<bool, int> parse_line_number(parse_state& s) {
     if (s.next() == 'N') {
       s++;
@@ -337,12 +357,6 @@ namespace gpr {
       return std::make_pair(true, ln);
     }
     return std::make_pair(false, -1);
-  }
-
-  bool is_slash(const string& s) {
-    if (s.size() != 1) { return false; }
-
-    return s[0] == '/';
   }
 
   std::pair<bool, int> parse_line_number(parse_stream<string>& s) {
@@ -359,7 +373,7 @@ namespace gpr {
   block parse_tokens(const std::vector<string>& tokens) {
     parse_stream<string> s(tokens);
     vector<chunk> chunks;
-    bool is_slashed = is_slash(s.next()); //parse_slash(s);
+    bool is_slashed = parse_slash(s);
 
     std::pair<bool, int> line_no =
       parse_line_number(s);
