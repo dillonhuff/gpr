@@ -269,15 +269,13 @@ namespace gpr {
   }
 
   chunk parse_word_address(parse_stream<string>& s) {
-    cout << "Parsing address, next = " << s.next() << endl;
-
+    assert(s.chars_left());
     assert(s.next().size() == 1);
 
     char c = s.next()[0];
     s++;
 
-    cout << "After that = " << s.next() << endl;
-
+    cout << "value to be parsed in parse address = " << s.next() << endl;
 
     addr a = parse_address(c, s);
     return chunk(c, a);
@@ -306,13 +304,20 @@ namespace gpr {
   }
 
   chunk parse_chunk(parse_stream<string>& s) {
+    assert(s.chars_left());
+
     if (s.next() == "[") {
       string cs = parse_comment_with_delimiters("[", "]", s);
       return chunk('[', ']', cs);
     } else if (s.next() == "(") {
       string cs = parse_comment_with_delimiters("(", ")", s);
+
+      cout << "Parsed comment = " << cs << endl;
+      cout << "Chars left ? " << s.chars_left() << endl;
+      cout << "Next s = " << s.next() << endl;
+
       return chunk('(', ')', cs);
-      assert(false);
+
     } else if (s.next() == ";") {
       // s++;
       // string cs = parse_line_comment_with_delimiter(';', s);
@@ -371,6 +376,12 @@ namespace gpr {
   }
 
   block parse_tokens(const std::vector<string>& tokens) {
+    cout << "Parsing tokens: ";
+    for (auto& t : tokens) {
+      cout << t << " ";
+    }
+    cout << endl;
+
     parse_stream<string> s(tokens);
     vector<chunk> chunks;
     bool is_slashed = parse_slash(s);
@@ -391,35 +402,35 @@ namespace gpr {
 
   }
 
-  block lex_gprog_line(const string& str) {
-    parse_state s(str);
+  // block lex_gprog_line(const string& str) {
+  //   parse_state s(str);
 
-    vector<chunk> chunks;
+  //   vector<chunk> chunks;
 
-    ignore_whitespace(s);
+  //   ignore_whitespace(s);
 
-    bool is_slashed = parse_slash(s);
+  //   bool is_slashed = parse_slash(s);
 
-    ignore_whitespace(s);
+  //   ignore_whitespace(s);
 
-    std::pair<bool, int> line_no =
-      parse_line_number(s);
+  //   std::pair<bool, int> line_no =
+  //     parse_line_number(s);
 
-    while (s.chars_left()) {
-      ignore_whitespace(s);
-      if (!s.chars_left()) { break; }
+  //   while (s.chars_left()) {
+  //     ignore_whitespace(s);
+  //     if (!s.chars_left()) { break; }
 
-      chunk ch = parse_chunk(s);
-      chunks.push_back(ch);
+  //     chunk ch = parse_chunk(s);
+  //     chunks.push_back(ch);
       
-    }
+  //   }
 
-    if (line_no.first) {
-      return block(line_no.second, is_slashed, chunks);
-    } else {
-      return block(is_slashed, chunks);
-    }
-  }
+  //   if (line_no.first) {
+  //     return block(line_no.second, is_slashed, chunks);
+  //   } else {
+  //     return block(is_slashed, chunks);
+  //   }
+  // }
 
   // vector<block> lex_gprog(const string& str) {
   //   vector<block> blocks;
@@ -452,10 +463,6 @@ namespace gpr {
 	vector<string> line_tokens = lex_block(line);
 	block b = parse_tokens(line_tokens);
 	blocks.push_back(b);
-	// block b = lex_gprog_line(line);
-	// //if (b.size() > 0) {
-	//   blocks.push_back(b);
-	//   //}
       }
       line_start += line.size() + 1;
     }
