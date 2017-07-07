@@ -165,8 +165,13 @@ namespace gpr {
     int depth = 0;
     string text = "";
     do {
-      if (s.next() == sc) { depth++; }
-      else if (s.next() == ec) { depth--; }
+      if (s.next() == sc) {
+	depth++;
+	text += s.next();
+      } else if (s.next() == ec) {
+	depth--;
+	text += s.next();
+      }
       else {
 	text += s.next();
       }
@@ -411,8 +416,7 @@ namespace gpr {
       return "/";
 
     case '(':
-      s++;
-      return "(";
+      return parse_comment_with_delimiters('(', ')', s);
 
     case ')':
       s++;
@@ -426,54 +430,10 @@ namespace gpr {
       s++;
       return "]";
       
-    // case 'X':
-    // case 'Y':
-    // case 'Z':
-    // case 'I':
-    // case 'J':
-    // case 'K':
-    // case 'F':
-    // case 'R':
-    // case 'Q':
-    // case 'S':
-    // case 'x':
-    // case 'y':
-    // case 'z':
-    // case 'i':
-    // case 'j':
-    // case 'k':
-    // case 'f':
-    // case 'r':
-    // case 's':
-    // case 'q':
-    // case 'E':
-    // case 'G':
-    // case 'H':
-    // case 'M':
-    // case 'N':
-    // case 'O':
-    // case 'T':
-    // case 'P':
-    // case 'D':
-    // case 'L':
-    // case 'g':
-    // case 'h':
-    // case 'm':
-    // case 'n':
-    // case 'o':
-    // case 't':
-    // case 'p':
-    // case 'd':
-    // case 'l':
     default:
       next_token += c;
       s++;
       return next_token;
-      //    default:
-      // cout << "Invalid c = " << c << endl;
-      // cout << "Inavlid c as int = " << ((int) c) << endl;
-      // cout << "Is EOF? " << (((int) c) == EOF) << endl;
-      // assert(false);
     }
     
   }
