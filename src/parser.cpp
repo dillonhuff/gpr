@@ -212,13 +212,21 @@ namespace gpr {
   chunk parse_chunk(parse_stream<string>& s) {
     assert(s.chars_left());
 
-    if (s.next() == "[") {
-      string cs = parse_comment_with_delimiters("[", "]", s);
-      return chunk('[', ']', cs);
-    } else if (s.next() == "(") {
-      string cs = parse_comment_with_delimiters("(", ")", s);
+    if (s.next()[0] == '[') {
+      string cs = s.next();
+      cout << "cs = " << cs << endl;
+      s++;
+      return chunk('[', ']', cs.substr(1, cs.size() - 2));
+    } else if (s.next()[0] == '(') {
 
-      return chunk('(', ')', cs);
+      string cs = s.next();
+      cout << "cs = " << cs << endl;
+      s++;
+      return chunk('(', ')', cs.substr(1, cs.size() - 2));
+
+      // 	string cs = parse_comment_with_delimiters("(", ")", s);
+
+      // return chunk('(', ')', cs);
 
     } else if (s.next() == ";") {
       s++;
@@ -418,17 +426,14 @@ namespace gpr {
     case '(':
       return parse_comment_with_delimiters('(', ')', s);
 
-    case ')':
-      s++;
-      return ")";
-
     case '[':
-      s++;
-      return "[";
+      return parse_comment_with_delimiters('[', ']', s);
+
+    case ')':
+      assert(false);
 
     case ']':
-      s++;
-      return "]";
+      assert(false);
       
     default:
       next_token += c;
