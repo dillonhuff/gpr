@@ -214,19 +214,13 @@ namespace gpr {
 
     if (s.next()[0] == '[') {
       string cs = s.next();
-      cout << "cs = " << cs << endl;
       s++;
       return chunk('[', ']', cs.substr(1, cs.size() - 2));
     } else if (s.next()[0] == '(') {
 
       string cs = s.next();
-      cout << "cs = " << cs << endl;
       s++;
       return chunk('(', ')', cs.substr(1, cs.size() - 2));
-
-      // 	string cs = parse_comment_with_delimiters("(", ")", s);
-
-      // return chunk('(', ')', cs);
 
     } else if (s.next() == ";") {
       s++;
