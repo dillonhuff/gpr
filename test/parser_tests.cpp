@@ -80,6 +80,9 @@ namespace gpr {
     REQUIRE(!(p.get_block(0).is_deleted()));
   }
 
+  TEST_CASE("Lex line") {
+  }
+
   TEST_CASE("3rd block is labeled line 103") {
     gcode_program p =
       parse_gcode("(*** Toolpath 1 ***)\n G0 X0.0 Y0.0 Z0.0 \n N103 G1 X1.0 F23.0\nG1 Z-1.0 F10.0");

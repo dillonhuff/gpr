@@ -116,57 +116,6 @@ namespace gpr {
     return def;
   }
 
-  addr parse_address(char c, parse_state& s) {
-    switch(c) {
-    case 'X':
-    case 'Y':
-    case 'Z':
-    case 'I':
-    case 'J':
-    case 'K':
-    case 'F':
-    case 'R':
-    case 'Q':
-    case 'S':
-    case 'x':
-    case 'y':
-    case 'z':
-    case 'i':
-    case 'j':
-    case 'k':
-    case 'f':
-    case 'r':
-    case 's':
-    case 'q':
-    case 'E':
-      return make_double_address(parse_double(s));
-    case 'G':
-    case 'H':
-    case 'M':
-    case 'N':
-    case 'O':
-    case 'T':
-    case 'P':
-    case 'D':
-    case 'L':
-    case 'g':
-    case 'h':
-    case 'm':
-    case 'n':
-    case 'o':
-    case 't':
-    case 'p':
-    case 'd':
-    case 'l':
-      return make_int_address(parse_int(s));
-    default:
-      cout << "Invalid c = " << c << endl;
-      cout << "Inavlid c as int = " << ((int) c) << endl;
-      cout << "Is EOF? " << (((int) c) == EOF) << endl;
-      assert(false);
-    }
-  }
-
   addr parse_address(char c, parse_stream<string>& s) {
     switch(c) {
     case 'X':
@@ -259,14 +208,6 @@ namespace gpr {
 
     return text;
   }
-  
-  chunk parse_word_address(parse_state& s) {
-    char c = s.next();
-    s++;
-
-    addr a = parse_address(c, s);
-    return chunk(c, a);
-  }
 
   chunk parse_word_address(parse_stream<string>& s) {
     assert(s.chars_left());
@@ -279,28 +220,6 @@ namespace gpr {
 
     addr a = parse_address(c, s);
     return chunk(c, a);
-  }
-  
-  chunk parse_chunk(parse_state& s) {
-
-    // if (s.next() == '[') {
-    //   string cs = parse_comment_with_delimiters(string("["),
-    // 						string("]"),
-    // 						s);
-    //   return chunk('[', ']', cs);
-    // } else if (s.next() == '(') {
-    //   string cs = parse_comment_with_delimiters("(", ")", s);
-    //   return chunk('(', ')', cs);
-    // } else if (s.next() == ';') {
-    //   s++;
-    //   // string cs = parse_line_comment_with_delimiter(';', s);
-    //   // return chunk(';', ';', cs);
-    //   assert(false);
-    // } else {
-    //   return parse_word_address(s);
-    // }
-
-    assert(false);
   }
 
   chunk parse_chunk(parse_stream<string>& s) {
@@ -459,11 +378,14 @@ namespace gpr {
     while (line_start < str.end()) {
       line_end = find(line_start, str.end(), '\n');
       string line(line_start, line_end);
+      cout << "Line to parse = " << line << endl;
+
       if (line.size() > 0) {
 	vector<string> line_tokens = lex_block(line);
 	block b = parse_tokens(line_tokens);
 	blocks.push_back(b);
       }
+
       line_start += line.size() + 1;
     }
     return blocks;
