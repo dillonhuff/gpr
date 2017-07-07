@@ -138,16 +138,23 @@ namespace gpr {
 
   }
 
+  TEST_CASE("Parse percent sign") {
+    gcode_program p =
+      parse_gcode_saving_block_text("%");
+
+    //REQUIRE(p.get_block(0).get_chunk(0));
+  }
+
   TEST_CASE("Full sample parsing") {
 
-    // SECTION("Parse HAAS sample") {
-    //   std::ifstream t("./gcode_samples/HAAS_sample.NCF");
-    //   std::string file_contents((std::istreambuf_iterator<char>(t)),
-    // 				std::istreambuf_iterator<char>());
+    SECTION("Parse HAAS sample") {
+      std::ifstream t("./gcode_samples/HAAS_sample.NCF");
+      std::string file_contents((std::istreambuf_iterator<char>(t)),
+    				std::istreambuf_iterator<char>());
 
-    //   gcode_program p = parse_gcode(file_contents);
+      gcode_program p = parse_gcode(file_contents);
       
-    // }
+    }
 
     SECTION("Parse Cura sample") {
       std::ifstream t("./gcode_samples/cura_3D_printer.gcode");
