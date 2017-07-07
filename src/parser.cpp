@@ -43,7 +43,7 @@ namespace gpr {
     }
 
     typename vector<T>::iterator begin() {
-      return s.end();
+      return s.begin();
     }
     
     typename vector<T>::iterator remaining() {
