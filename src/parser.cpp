@@ -362,6 +362,7 @@ namespace gpr {
       string line(line_start, line_end);
 
       if (line.size() > 0) {
+	cout << "Parsing line = " << line << endl;
 	vector<string> line_tokens = lex_block(line);
 	block b = parse_tokens(line_tokens);
 	blocks.push_back(b);

@@ -145,6 +145,13 @@ namespace gpr {
     REQUIRE(p.get_block(0).get_chunk(0) == make_percent_chunk());
   }
 
+  TEST_CASE("Parsing HAAS block with isolated word 'P'") {
+    gcode_program p =
+      parse_gcode("G99 G82 R0.1 Z-0.1227 P F15.04");
+
+    REQUIRE(p.get_block(0).get_chunk(4));
+  }
+  
   TEST_CASE("Full sample parsing") {
 
     SECTION("Parse HAAS sample") {
@@ -170,6 +177,7 @@ namespace gpr {
     }
     
   }
+
 
   
 }
