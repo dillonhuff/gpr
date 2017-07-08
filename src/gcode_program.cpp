@@ -59,4 +59,7 @@ namespace gpr {
     return chunk();
   }
 
+  chunk make_isolated_word(const char c) {
+    return chunk(c);
+  }
 }

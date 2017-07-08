@@ -72,7 +72,8 @@ namespace gpr {
   enum chunk_type {
     CHUNK_TYPE_COMMENT,
     CHUNK_TYPE_WORD_ADDRESS,
-    CHUNK_TYPE_PERCENT
+    CHUNK_TYPE_PERCENT,
+    CHUNK_TYPE_WORD
   };
 
   struct comment_data {
@@ -127,9 +128,14 @@ namespace gpr {
 
     // Word-address fields
     word_address_data wad;
+
+    // Isolated word fields
+    char single_word;
     
   public:
     chunk() : chunk_tp(CHUNK_TYPE_PERCENT) {}
+
+    chunk(const char c) : chunk_tp(CHUNK_TYPE_WORD), single_word(c) {}
 	      
     chunk(const char p_left_delim,
 	  const char p_right_delim,
@@ -233,6 +239,7 @@ namespace gpr {
 		     const char end_delim,
 		     const std::string& comment_text);
 
+  chunk make_isolated_word(const char c);
   chunk make_word_int(const char c, const int i);
   chunk make_word_double(const char c, const double i);
   chunk make_percent_chunk();

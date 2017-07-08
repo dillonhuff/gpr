@@ -53,7 +53,13 @@ namespace gpr {
   };
 
   typedef parse_stream<char> parse_state;
-  
+
+  bool is_num_char(const char c) {
+    return (isdigit(c) ||
+	    (c == '.') ||
+	    (c == '-'));
+  }
+
   void ignore_whitespace(parse_state& s) {
     while (s.chars_left() && (isspace(s.next()) || s.next() == '\r')) { s++; }
   }
@@ -198,6 +204,16 @@ namespace gpr {
     return text;
   }
 
+  chunk parse_isolated_word(parse_stream<string>& s) {
+    assert(s.chars_left());
+    assert(s.next().size() == 1);
+
+    char c = s.next()[0];
+    s++;
+
+    return make_isolated_word(c);
+  }
+
   chunk parse_word_address(parse_stream<string>& s) {
     assert(s.chars_left());
     assert(s.next().size() == 1);
@@ -230,6 +246,11 @@ namespace gpr {
       string cs = parse_line_comment_with_delimiter(";", s);
       return chunk(';', ';', cs);
     } else {
+      string next_next = *(s.remaining() + 1);
+
+      if (!is_num_char(next_next[0])) {
+	return parse_isolated_word(s);
+      }
       return parse_word_address(s);
     }
     
@@ -362,7 +383,7 @@ namespace gpr {
       string line(line_start, line_end);
 
       if (line.size() > 0) {
-	cout << "Parsing line = " << line << endl;
+	//cout << "Parsing line = " << line << endl;
 	vector<string> line_tokens = lex_block(line);
 	block b = parse_tokens(line_tokens);
 	blocks.push_back(b);
@@ -384,12 +405,6 @@ namespace gpr {
       b.set_debug_text();
     }
     return gcode_program(blocks);
-  }
-
-  bool is_num_char(const char c) {
-    return (isdigit(c) ||
-	    (c == '.') ||
-	    (c == '-'));
   }
 
   std::string digit_string(parse_state& s) {
