@@ -142,7 +142,7 @@ namespace gpr {
     gcode_program p =
       parse_gcode_saving_block_text("%");
 
-    //REQUIRE(p.get_block(0).get_chunk(0));
+    REQUIRE(p.get_block(0).get_chunk(0) == make_percent_chunk());
   }
 
   TEST_CASE("Full sample parsing") {

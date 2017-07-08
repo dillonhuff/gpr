@@ -222,6 +222,9 @@ namespace gpr {
       s++;
       return chunk('(', ')', cs.substr(1, cs.size() - 2));
 
+    } else if (s.next() == "%") {
+      s++;
+      return make_percent_chunk();
     } else if (s.next() == ";") {
       s++;
       string cs = parse_line_comment_with_delimiter(";", s);

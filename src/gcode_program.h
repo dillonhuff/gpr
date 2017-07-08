@@ -71,7 +71,8 @@ namespace gpr {
 
   enum chunk_type {
     CHUNK_TYPE_COMMENT,
-    CHUNK_TYPE_WORD_ADDRESS
+    CHUNK_TYPE_WORD_ADDRESS,
+    CHUNK_TYPE_PERCENT
   };
 
   struct comment_data {
@@ -79,6 +80,7 @@ namespace gpr {
     char right_delim;
     std::string comment_text;
 
+    comment_data() : left_delim('('), right_delim(')'), comment_text("") {}
     comment_data(const char p_left_delim,
 		 const char p_right_delim,
 		 const std::string& p_comment_text) :
@@ -127,6 +129,8 @@ namespace gpr {
     word_address_data wad;
     
   public:
+    chunk() : chunk_tp(CHUNK_TYPE_PERCENT) {}
+	      
     chunk(const char p_left_delim,
 	  const char p_right_delim,
 	  const std::string& p_comment_text) :
@@ -193,6 +197,9 @@ namespace gpr {
 	return equals_word_address(other);
       } else if (tp() == CHUNK_TYPE_COMMENT) {
 	return equals_comment(other);
+      } else if (tp() == CHUNK_TYPE_PERCENT) {
+	// Any 2 percent chunks are always equal
+	return true;
       } else {
 	assert(false);
       }
@@ -213,6 +220,8 @@ namespace gpr {
 	print_comment(stream);
       } else if (tp() == CHUNK_TYPE_WORD_ADDRESS) {
 	print_word_address(stream);
+      } else if (tp() == CHUNK_TYPE_PERCENT) {
+	stream << "%";
       } else {
 	assert(false);
       }
@@ -226,6 +235,7 @@ namespace gpr {
 
   chunk make_word_int(const char c, const int i);
   chunk make_word_double(const char c, const double i);
+  chunk make_percent_chunk();
 
   bool operator==(const chunk& l, const chunk& r);
   bool operator!=(const chunk& l, const chunk& r);

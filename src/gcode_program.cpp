@@ -54,5 +54,9 @@ namespace gpr {
 		     const std::string& comment_text) {
     return chunk(start_delim, end_delim, comment_text);
   }
-  
+
+  chunk make_percent_chunk() {
+    return chunk();
+  }
+
 }
