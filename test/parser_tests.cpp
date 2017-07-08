@@ -160,6 +160,8 @@ namespace gpr {
     				std::istreambuf_iterator<char>());
 
       gcode_program p = parse_gcode(file_contents);
+
+      REQUIRE(p.get_block(42).size() == 1);
       
     }
 
