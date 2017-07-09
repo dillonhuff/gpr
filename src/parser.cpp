@@ -38,15 +38,15 @@ namespace gpr {
       return *this;
     }
 
-    typename vector<T>::iterator end() {
+    typename vector<T>::const_iterator end() {
       return s.end();
     }
 
-    typename vector<T>::iterator begin() {
+    typename vector<T>::const_iterator begin() {
       return s.begin();
     }
     
-    typename vector<T>::iterator remaining() {
+    typename vector<T>::const_iterator remaining() {
       return s.begin() + i;
     }
 
@@ -77,13 +77,6 @@ namespace gpr {
     assert(false);
   }
 
-  double parse_double(parse_state& s) {
-    size_t j = s.i;
-    double v = stod(string_remaining(s), &j);
-    s.i += j;
-    return v;
-  }
-
   double parse_double(parse_stream<string>& s) {
     double v = stod(s.next());
     s++;
@@ -94,16 +87,6 @@ namespace gpr {
     int i = stoi(s.next());
     s++;
     return i;
-  }
-
-  int parse_int(parse_state& s) {
-    size_t j = s.i;
-
-    //cout << "Remaining = " << string_remaining(s) << endl;
-    int v = stoi(string_remaining(s), &j);
-
-    s.i += j;
-    return v;
   }
 
   addr parse_address(char c, parse_stream<string>& s) {
@@ -290,17 +273,6 @@ namespace gpr {
     }
 
     return false;
-  }
-  
-  std::pair<bool, int> parse_line_number(parse_state& s) {
-    if (s.next() == 'N') {
-      s++;
-
-      int ln = parse_int(s);
-
-      return std::make_pair(true, ln);
-    }
-    return std::make_pair(false, -1);
   }
 
   std::pair<bool, int> parse_line_number(parse_stream<string>& s) {
