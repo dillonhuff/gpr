@@ -161,6 +161,20 @@ namespace gpr {
   
   TEST_CASE("Full sample parsing") {
 
+    SECTION("Parse mazak sample") {
+      std::ifstream t("./gcode_samples/mazak_sample.EIA");
+      std::string file_contents((std::istreambuf_iterator<char>(t)),
+    				std::istreambuf_iterator<char>());
+
+      gcode_program p = parse_gcode(file_contents);
+
+      cout << "Mazak program: " << endl;
+      cout << p << endl;
+
+      cout << "Block 28 = " << p.get_block(28) << endl;
+      REQUIRE(p.get_block(28).size() == 3);
+    }
+    
     SECTION("Parse linuxCNC sample") {
       std::ifstream t("./gcode_samples/linuxcnc_sample.ngc");
       std::string file_contents((std::istreambuf_iterator<char>(t)),
@@ -168,11 +182,9 @@ namespace gpr {
 
       gcode_program p = parse_gcode(file_contents);
 
-      cout << "Block 30341 = " << p.get_block(30341) << endl;
       REQUIRE(p.get_block(30341).size() == 5);
-      
     }
-    
+
     SECTION("Parse CAMASTER sample") {
       std::ifstream t("./gcode_samples/camaster_sample.tap");
       std::string file_contents((std::istreambuf_iterator<char>(t)),

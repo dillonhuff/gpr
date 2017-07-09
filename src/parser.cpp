@@ -111,6 +111,12 @@ namespace gpr {
     case 'X':
     case 'Y':
     case 'Z':
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'U':
+    case 'V':
+    case 'W':
     case 'I':
     case 'J':
     case 'K':
@@ -121,6 +127,12 @@ namespace gpr {
     case 'x':
     case 'y':
     case 'z':
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'u':
+    case 'v':
+    case 'w':
     case 'i':
     case 'j':
     case 'k':
