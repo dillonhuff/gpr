@@ -151,7 +151,7 @@ namespace gpr {
       return make_int_address(parse_int(s));
     default:
       cout << "Invalid c = " << c << endl;
-      cout << "Inavlid c as int = " << ((int) c) << endl;
+      cout << "Invalid c as int = " << ((int) c) << endl;
       cout << "Is EOF? " << (((int) c) == EOF) << endl;
       assert(false);
     }
@@ -304,6 +304,8 @@ namespace gpr {
 
   block parse_tokens(const std::vector<string>& tokens) {
 
+    if (tokens.size() == 0) { return block(false, {}); }
+
     parse_stream<string> s(tokens);
     vector<chunk> chunks;
     bool is_slashed = parse_slash(s);
@@ -324,55 +326,6 @@ namespace gpr {
 
   }
 
-  // block lex_gprog_line(const string& str) {
-  //   parse_state s(str);
-
-  //   vector<chunk> chunks;
-
-  //   ignore_whitespace(s);
-
-  //   bool is_slashed = parse_slash(s);
-
-  //   ignore_whitespace(s);
-
-  //   std::pair<bool, int> line_no =
-  //     parse_line_number(s);
-
-  //   while (s.chars_left()) {
-  //     ignore_whitespace(s);
-  //     if (!s.chars_left()) { break; }
-
-  //     chunk ch = parse_chunk(s);
-  //     chunks.push_back(ch);
-      
-  //   }
-
-  //   if (line_no.first) {
-  //     return block(line_no.second, is_slashed, chunks);
-  //   } else {
-  //     return block(is_slashed, chunks);
-  //   }
-  // }
-
-  // vector<block> lex_gprog(const string& str) {
-  //   vector<block> blocks;
-  //   string::const_iterator line_start = str.begin();
-  //   string::const_iterator line_end;
-
-  //   while (line_start < str.end()) {
-  //     line_end = find(line_start, str.end(), '\n');
-  //     string line(line_start, line_end);
-  //     if (line.size() > 0) {
-  // 	block b = lex_gprog_line(line);
-  // 	//if (b.size() > 0) {
-  // 	  blocks.push_back(b);
-  // 	  //}
-  //     }
-  //     line_start += line.size() + 1;
-  //   }
-  //   return blocks;
-  // }
-
   vector<block> lex_gprog(const string& str) {
     vector<block> blocks;
     string::const_iterator line_start = str.begin();
@@ -383,8 +336,12 @@ namespace gpr {
       string line(line_start, line_end);
 
       if (line.size() > 0) {
-	//cout << "Parsing line = " << line << endl;
+	// cout << "Parsing line = " << line << endl;
+	// cout << "Line size = " << line.size() << endl;
+	// cout << "Invalid c as int = " << ((int) line[0]) << endl;
 	vector<string> line_tokens = lex_block(line);
+	//cout << "# of line tokens = " << line_tokens.size() << endl;
+
 	block b = parse_tokens(line_tokens);
 	blocks.push_back(b);
       }
