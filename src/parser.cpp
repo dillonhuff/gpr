@@ -348,11 +348,8 @@ namespace gpr {
       string line(line_start, line_end);
 
       if (line.size() > 0) {
-	// cout << "Parsing line = " << line << endl;
-	// cout << "Line size = " << line.size() << endl;
-	// cout << "Invalid c as int = " << ((int) line[0]) << endl;
+
 	vector<string> line_tokens = lex_block(line);
-	//cout << "# of line tokens = " << line_tokens.size() << endl;
 
 	block b = parse_tokens(line_tokens);
 	blocks.push_back(b);
@@ -398,12 +395,6 @@ namespace gpr {
     }
 
     switch(c) {
-    case '%':
-      s++;
-      return "%";
-    case '/':
-      s++;
-      return "/";
 
     case '(':
       return parse_comment_with_delimiters('(', ')', s);

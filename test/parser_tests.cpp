@@ -168,10 +168,6 @@ namespace gpr {
 
       gcode_program p = parse_gcode(file_contents);
 
-      cout << "Mazak program: " << endl;
-      cout << p << endl;
-
-      cout << "Block 28 = " << p.get_block(28) << endl;
       REQUIRE(p.get_block(28).size() == 3);
     }
     
