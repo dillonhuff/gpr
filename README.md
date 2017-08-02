@@ -18,7 +18,7 @@ What everybody agrees on is that GCODE programs consist of blocks, which are rea
 3. Any number of words, parameter settings and comments
 4. An end of line marker (carriage return)
 
-G-code emitted by modern CAM tools usually consists mostly of comments and words. For example the gcode program below has 4 blocks: 1 comment, and three movement commands.
+G-code emitted by modern CAM systems usually consists mostly of comments and words. For example the gcode program below has 4 blocks: 1 comment, and three movement commands.
 
 ```
 
