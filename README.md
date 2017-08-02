@@ -20,14 +20,14 @@ What everybody agrees on is that GCODE programs consist of blocks, which are rea
 
 G-code emitted by modern CAM tools usually consists mostly of comments and words. For example the gcode program below has 4 blocks: 1 comment, and three movement commands.
 
-[code language="cpp"]
+```
 
 (*** Toolpath 1 ***)
 G0 X0.0 Y0.0 Z0.0
 G1 X1.0 F23.0
 G1 Z-1.0 F10.0
 
-[/code]
+```
 
 Since the interpretation of GCODE commands varies from vendor to vendor this parser does not make any attempt to interpret GCODE commands. It simply parses GCODE and returns the parsed blocks.
 G-code Dialects Supported
