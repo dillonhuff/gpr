@@ -158,6 +158,15 @@ namespace gpr {
 
     REQUIRE(p.num_blocks() == 2);
   }
+
+  TEST_CASE("Parse CAMASTER style feedrate controls") {
+    gcode_program p =
+      parse_gcode("F10 XY [SET FEEDRATE FOR X AND Y]");
+
+    REQUIRE(p.num_blocks() == 1);
+
+    REQUIRE(p.get_block(0).size() == 4);
+  }
   
   TEST_CASE("Full sample parsing") {
 

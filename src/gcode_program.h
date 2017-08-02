@@ -178,6 +178,11 @@ namespace gpr {
       assert(tp() == CHUNK_TYPE_WORD_ADDRESS);
       return wad.adr;
     }
+
+    char get_single_word() const {
+      assert(tp() == CHUNK_TYPE_WORD);
+      return single_word;
+    }
     
     bool equals_word_address(const chunk& other_addr) const {
       assert(other_addr.tp() == CHUNK_TYPE_WORD_ADDRESS);
@@ -220,6 +225,10 @@ namespace gpr {
       stream << wad.wd;
       wad.adr.print(stream);
     }
+
+    void print_word(std::ostream& stream) const {
+      stream << get_single_word();
+    }
     
     void print(std::ostream& stream) const {
       if (tp() == CHUNK_TYPE_COMMENT) {
@@ -228,6 +237,8 @@ namespace gpr {
 	print_word_address(stream);
       } else if (tp() == CHUNK_TYPE_PERCENT) {
 	stream << "%";
+      } else if (tp() == CHUNK_TYPE_WORD) {
+	print_word(stream);
       } else {
 	assert(false);
       }
