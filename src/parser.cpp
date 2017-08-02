@@ -78,14 +78,20 @@ namespace gpr {
   }
 
   double parse_double(parse_stream<string>& s) {
+
     double v = stod(s.next());
+
     s++;
+
     return v;
   }
   
   int parse_int(parse_stream<string>& s) {
+
     int i = stoi(s.next());
+
     s++;
+
     return i;
   }
 
