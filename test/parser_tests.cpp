@@ -223,6 +223,40 @@ namespace gpr {
       REQUIRE(p.get_block(1929).get_chunk(0).get_comment_text() == "TYPE:WALL-INNER");
       
     }
+
+    SECTION("All files being parsed") {
+
+      std::ifstream t1("./gcode_samples/mazak_sample.EIA");
+      std::string file_contents1((std::istreambuf_iterator<char>(t1)),
+				 std::istreambuf_iterator<char>());
+
+      cout << file_contents1.size() << endl;
+
+      std::ifstream t2("./gcode_samples/linuxcnc_sample.ngc");
+      std::string file_contents2((std::istreambuf_iterator<char>(t2)),
+				 std::istreambuf_iterator<char>());
+
+      cout << file_contents2.size() << endl;
+
+      std::ifstream t3("./gcode_samples/camaster_sample.tap");
+      std::string file_contents3((std::istreambuf_iterator<char>(t3)),
+				 std::istreambuf_iterator<char>());
+
+      cout << file_contents3.size() << endl;
+      
+      std::ifstream t4("./gcode_samples/HAAS_sample.NCF");
+      std::string file_contents4((std::istreambuf_iterator<char>(t4)),
+				 std::istreambuf_iterator<char>());
+
+      cout << file_contents4.size() << endl;
+ 
+      std::ifstream t5("./gcode_samples/cura_3D_printer.gcode");
+      std::string file_contents5((std::istreambuf_iterator<char>(t5)),
+				 std::istreambuf_iterator<char>());
+
+
+      cout << file_contents5.size() << endl;
+    }
     
   }
 
