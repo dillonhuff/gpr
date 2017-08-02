@@ -19,7 +19,8 @@ SET(GPR_CPPS src/parser.cpp
 
 add_library(gpr ${GPR_CPPS})
 
-SET(TEST_FILES test/parser_tests.cpp)
+SET(TEST_FILES test/parser_tests.cpp
+	       test/main.cpp)
 
 add_executable(all-tests ${TEST_FILES})
 target_link_libraries(all-tests gpr)
