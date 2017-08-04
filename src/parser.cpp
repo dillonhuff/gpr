@@ -387,7 +387,7 @@ namespace gpr {
       assert(false);
       
     default:
-      next_token += c;
+      next_token = c;
       s++;
       return next_token;
     }
