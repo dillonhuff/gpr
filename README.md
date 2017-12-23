@@ -31,7 +31,8 @@ G1 Z-1.0 F10.0
 ```
 
 Since the interpretation of G-code commands varies from vendor to vendor this parser does not make any attempt to interpret G-code commands. It simply parses G-code and returns the parsed blocks.
-G-code Dialects Supported
+
+## G-code Dialects Supported
 
 This parser has been tested on 5 different G-code samples which are in the gcode_samples folder
 
