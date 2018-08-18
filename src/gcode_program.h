@@ -301,7 +301,7 @@ namespace gpr {
       line_no(other.line_no),
       slashed_out(other.slashed_out) {
 
-      for (unsigned i = 0; i < other.chunks.size(); i++) {
+      for (size_t i = 0; i < other.chunks.size(); i++) {
 	chunks.push_back( other.chunks[i] );
       }
 
@@ -311,7 +311,7 @@ namespace gpr {
       has_line_no = other.has_line_no;
       line_no = other.line_no;
       slashed_out = other.slashed_out;
-      for (unsigned i = 0; i < other.chunks.size(); i++) {
+      for (size_t i = 0; i < other.chunks.size(); i++) {
 	chunks.push_back( other.chunks[i] );
       }
 
@@ -381,7 +381,7 @@ namespace gpr {
 
     int num_blocks() const { return blocks.size(); }
 
-    block get_block(const int i) {
+    block get_block(const size_t i) {
       assert(i < blocks.size());
       return blocks[i];
     }
