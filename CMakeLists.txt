@@ -19,7 +19,7 @@ SET(GPR_HEADERS src/gcode_program.h
 SET(GPR_CPPS src/parser.cpp
 	     src/gcode_program.cpp)
 
-add_library(gpr ${GPR_CPPS})
+add_library(gpr SHARED ${GPR_CPPS})
 
 SET(TEST_FILES test/parser_tests.cpp
 	       test/main.cpp)
@@ -29,3 +29,5 @@ target_link_libraries(all-tests gpr)
 
 add_executable(parse-gcode src/main.cpp)
 target_link_libraries(parse-gcode gpr)
+
+install(TARGETS gpr LIBRARY DESTINATION lib)
