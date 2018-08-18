@@ -19,6 +19,8 @@ SET(GPR_HEADERS src/gcode_program.h
 SET(GPR_CPPS src/parser.cpp
 	     src/gcode_program.cpp)
 
+set(CMAKE_MACOSX_RPATH 1)
+
 add_library(gpr SHARED ${GPR_CPPS})
 
 SET(TEST_FILES test/parser_tests.cpp
