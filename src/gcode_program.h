@@ -134,6 +134,7 @@ namespace gpr {
     
   public:
     chunk() : chunk_tp(CHUNK_TYPE_PERCENT) {}
+    virtual ~chunk() {}
 
     chunk(const char c) : chunk_tp(CHUNK_TYPE_WORD), single_word(c) {}
 	      
