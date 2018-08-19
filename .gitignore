@@ -7,3 +7,4 @@ cmake_install.cmake
 libgpr.a
 all-tests.dSYM/
 parse-gcode
+libgpr.dylib
