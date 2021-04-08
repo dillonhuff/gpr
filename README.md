@@ -42,6 +42,14 @@ This parser has been tested on 5 different G-code samples which are in the gcode
 4. **HAAS**: Taken from a machinists forum post.
 5. **Mazak**: Produced by Mazak's Mazatrol to G-code converter.
 
+## Build Instructions
+
+```bash
+cmake .
+make -j
+./all-tests
+```
+
 ## Feedback
 
 If you use this parser in your own project I would really like to hear from you
