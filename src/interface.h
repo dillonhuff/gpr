@@ -9,7 +9,8 @@ class interface
 {
 public:
     interface();
-    void read_gcode_file(std::string filename);
+    !// A Function to print out the fancy gcode file.
+    void read_gcode_file(std::string filename); 
 };
 
 #endif // INTERFACE_H
