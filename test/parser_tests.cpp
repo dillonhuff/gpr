@@ -151,6 +151,12 @@ namespace gpr {
     REQUIRE(p.get_block(0).get_chunk(4).tp() == CHUNK_TYPE_WORD);
   }
 
+  TEST_CASE("Parsing block only an isolated word 'P'") {
+    gcode_program p = parse_gcode("P");
+
+    REQUIRE(p.get_block(0).get_chunk(0).tp() == CHUNK_TYPE_WORD);
+  }
+
   TEST_CASE("Parse blank line") {
     gcode_program p =
       parse_gcode("G99 G82 R0.1 Z-0.1227 P F15.04\n   ");
