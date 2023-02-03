@@ -282,7 +282,7 @@ namespace gpr {
   }
 
   std::pair<bool, int> parse_line_number(parse_stream<string>& s) {
-    if (s.next() == "N") {
+    if (s.chars_left() > 0 && s.next() == "N") {
       s++;
 
       int ln = parse_int(s);
