@@ -247,6 +247,9 @@ namespace gpr {
       string cs = parse_line_comment_with_delimiter(";", s);
       return chunk(';', ';', cs);
     } else {
+      if (s.i + 1 >= s.s.size()) {
+        return parse_isolated_word(s);
+      }
       string next_next = *(s.remaining() + 1);
 
       if (!is_num_char(next_next[0])) {
